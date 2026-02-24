@@ -1,0 +1,439 @@
+/* ===========================
+   MY BOOKINGS PAGE STYLES
+   =========================== */
+
+/* Page Header */
+.page-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--color-gray);
+}
+
+/* ===========================
+   STATS SECTION
+   =========================== */
+
+.stats-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-total {
+  border-color: var(--color-primary);
+}
+
+.stat-in-transit {
+  border-color: var(--color-accent);
+}
+
+.stat-delivered {
+  border-color: #27ae60;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  color: var(--color-gray);
+  font-weight: 500;
+}
+
+/* ===========================
+   FILTER SECTION
+   =========================== */
+
+.filter-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filter-btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  border: 2px solid var(--color-gray-light);
+  border-radius: 20px;
+  background-color: var(--color-white);
+  color: var(--color-gray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: rgba(26, 95, 58, 0.05);
+}
+
+.filter-btn-active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.filter-btn-active:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* ===========================
+   BOOKINGS LIST
+   =========================== */
+
+.bookings-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.bookings-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ===========================
+   BOOKING CARD
+   =========================== */
+
+.booking-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
+
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: var(--color-off-white);
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.booking-reference-badge {
+  font-family: "Courier New", monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background-color: rgba(26, 95, 58, 0.1);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
+.booking-status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+  color: var(--color-white);
+}
+
+.booking-status-badge.status-booked {
+  background-color: #3498db;
+}
+
+.booking-status-badge.status-awaiting-pickup {
+  background-color: #f39c12;
+}
+
+.booking-status-badge.status-picked-up {
+  background-color: #9b59b6;
+}
+
+.booking-status-badge.status-in-transit {
+  background-color: var(--color-accent);
+}
+
+.booking-status-badge.status-delivered {
+  background-color: #27ae60;
+}
+
+.booking-card-body {
+  padding: var(--spacing-md);
+}
+
+/* Route Display */
+.booking-route {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.route-point {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.route-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.route-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.route-label {
+  font-size: 0.75rem;
+  color: var(--color-gray);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.route-value {
+  font-size: 0.9375rem;
+  color: var(--color-dark);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-arrow {
+  font-size: 1.25rem;
+  color: var(--color-gray);
+  flex-shrink: 0;
+}
+
+/* Booking Meta */
+.booking-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.875rem;
+  color: var(--color-gray);
+}
+
+.meta-icon {
+  font-size: 1rem;
+}
+
+.meta-text {
+  font-weight: 500;
+}
+
+/* Booking Footer */
+.booking-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.8125rem;
+  color: var(--color-gray);
+  flex-wrap: wrap;
+}
+
+.booking-date,
+.booking-update {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.date-label,
+.update-label {
+  font-weight: 500;
+}
+
+.date-value,
+.update-value {
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+/* Card Actions */
+.booking-card-actions {
+  padding: var(--spacing-md);
+  padding-top: 0;
+}
+
+.btn-card {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-card-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-card-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* ===========================
+   EMPTY STATE
+   =========================== */
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-text {
+  font-size: 1rem;
+  color: var(--color-gray);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+/* ===========================
+   ACTIVE NAV LINK
+   =========================== */
+
+.nav-link-active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* ===========================
+   RESPONSIVE (Tablet & Desktop)
+   =========================== */
+
+@media (min-width: 768px) {
+  .page-title {
+    font-size: 2.5rem;
+  }
+
+  .stats-grid {
+    max-width: 700px;
+  }
+
+  .bookings-list {
+    max-width: 800px;
+  }
+
+  .booking-route {
+    gap: var(--spacing-md);
+  }
+
+  .route-value {
+    white-space: normal;
+  }
+
+  .filter-controls {
+    gap: var(--spacing-sm);
+  }
+
+  .filter-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}

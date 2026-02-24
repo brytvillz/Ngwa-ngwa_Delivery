@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin Panel - NgwaNgwa Delivery</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin-styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="logo">NgwaNgwa<span>Admin</span></h1>
+          <p class="tagline">Order Management Dashboard</p>
+          <nav class="header-nav">
+            <a href="index.html" class="nav-link">Book Delivery</a>
+            <a href="tracking.html" class="nav-link">Track Shipment</a>
+            <a href="my-bookings.html" class="nav-link">My Bookings</a>
+            <a href="admin.html" class="nav-link nav-link-active">Admin</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Admin Dashboard -->
+        <section class="admin-section">
+          <div class="admin-header">
+            <h2>📦 Order Management</h2>
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+          </div>
+
+          <!-- Stats Dashboard -->
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+              <div class="stat-icon">📊</div>
+              <div class="stat-content">
+                <span class="stat-label">Total Orders</span>
+                <span class="stat-value" id="statTotal">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📝</div>
+              <div class="stat-content">
+                <span class="stat-label">Booked</span>
+                <span class="stat-value" id="statBooked">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🚚</div>
+              <div class="stat-content">
+                <span class="stat-label">In Transit</span>
+                <span class="stat-value" id="statInTransit">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">✅</div>
+              <div class="stat-content">
+                <span class="stat-label">Delivered</span>
+                <span class="stat-value" id="statDelivered">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="admin-controls">
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchInput"
+                class="form-input"
+                placeholder="Search by reference number..."
+              />
+            </div>
+            <div class="filter-box">
+              <select id="statusFilter" class="form-select">
+                <option value="all">All Statuses</option>
+                <option value="Booked">Booked</option>
+                <option value="Awaiting Pickup">Awaiting Pickup</option>
+                <option value="Picked Up">Picked Up</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="table-container">
+            <table class="orders-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Customer</th>
+                  <th>From → To</th>
+                  <th>Item</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <!-- Orders will be inserted here by JavaScript -->
+              </tbody>
+            </table>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none">
+              <div class="empty-icon">📭</div>
+              <h3>No Orders Found</h3>
+              <p>There are no orders matching your search criteria.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2026 NgwaNgwa Delivery - Admin Panel (Authorized Access Only)
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="statusUpdater.js"></script>
+    <script src="adminAuth.js"></script>
+    <script src="adminManager.js"></script>
+  </body>
+</html>

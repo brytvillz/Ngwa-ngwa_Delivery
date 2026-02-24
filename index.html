@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NgwaNgwa Delivery - Fast and reliable local to national logistics service based in Enugu State, Nigeria."
+    />
+    <title>NgwaNgwa Delivery | Fast & Reliable Logistics</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="logo">NgwaNgwa<span>Delivery</span></h1>
+          <p class="tagline">Fast. Reliable. Local to National.</p>
+          <nav class="header-nav">
+            <a href="index.html" class="nav-link nav-link-active"
+              >Book Delivery</a
+            >
+            <a href="tracking.html" class="nav-link">Track Shipment</a>
+            <a href="my-bookings.html" class="nav-link">My Bookings</a>
+            <a href="admin.html" class="nav-link">Admin</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+          <h2 class="hero-title">
+            Get Your Items Delivered <span class="highlight">NgwaNgwa</span>
+          </h2>
+          <p class="hero-text">
+            Drop off at our Enugu hub or request pickup. We work with trusted
+            riders across Nigeria to deliver your items safely.
+          </p>
+        </section>
+
+        <!-- Quote Request Section (STEP 2 will build this out) -->
+        <section class="quote-section" id="quoteSection">
+          <div class="section-header">
+            <h3>Request a Delivery Quote</h3>
+            <p>
+              Tell us what you want to send. We'll contact you with pricing and
+              pickup/drop-off options.
+            </p>
+          </div>
+
+          <!-- Progress Indicator -->
+          <div class="progress-indicator">
+            <div class="progress-step active" data-step="1">
+              <span class="step-number">1</span>
+              <span class="step-label">Locations</span>
+            </div>
+            <div class="progress-step" data-step="2">
+              <span class="step-number">2</span>
+              <span class="step-label">Item Details</span>
+            </div>
+            <div class="progress-step" data-step="3">
+              <span class="step-number">3</span>
+              <span class="step-label">Contact</span>
+            </div>
+          </div>
+
+          <!-- Multi-Step Form -->
+          <form class="quote-form" id="quoteForm" novalidate>
+            <!-- STEP 1: Pickup & Delivery Locations -->
+            <div class="form-step active" data-step="1">
+              <div class="form-group">
+                <label for="pickupLocation" class="form-label">
+                  Pickup/Collection Location <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="pickupLocation"
+                  name="pickupLocation"
+                  class="form-input"
+                  placeholder="e.g., Independence Layout, Enugu"
+                  required
+                  aria-required="true"
+                  aria-describedby="pickupLocationHelp"
+                  minlength="3"
+                />
+                <span class="form-help" id="pickupLocationHelp">
+                  Where should we collect the item? (You can drop off at our hub
+                  or request pickup)
+                </span>
+                <span class="form-error" id="pickupLocationError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="deliveryLocation" class="form-label">
+                  Delivery Destination <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="deliveryLocation"
+                  name="deliveryLocation"
+                  class="form-input"
+                  placeholder="e.g., Victoria Island, Lagos"
+                  required
+                  aria-required="true"
+                  aria-describedby="deliveryLocationHelp"
+                  minlength="3"
+                />
+                <span class="form-help" id="deliveryLocationHelp">
+                  Where is the final destination? (We deliver nationwide through
+                  our partner network)
+                </span>
+                <span class="form-error" id="deliveryLocationError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Pickup Method <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="pickupMethod"
+                      value="dropoff"
+                      class="radio-input"
+                      checked
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Drop-off at hub</strong> (Fast & convenient)
+                    </span>
+                  </label>
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="pickupMethod"
+                      value="rider"
+                      class="radio-input"
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Request rider pickup</strong> (Subject to
+                      availability)
+                    </span>
+                  </label>
+                </div>
+                <span class="form-help">
+                  Hub drop-off is faster. Rider pickup depends on your location
+                  and schedule.
+                </span>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary" id="step1Next">
+                  Next
+                </button>
+              </div>
+            </div>
+
+            <!-- STEP 2: Item Details -->
+            <div class="form-step" data-step="2">
+              <div class="form-group">
+                <label for="itemType" class="form-label">
+                  Item Type <span class="required">*</span>
+                </label>
+                <select
+                  id="itemType"
+                  name="itemType"
+                  class="form-select"
+                  required
+                  aria-required="true"
+                  aria-describedby="itemTypeHelp"
+                >
+                  <option value="">Select item type</option>
+                  <option value="document">Document / Envelope</option>
+                  <option value="small">Small Package (fits in bag)</option>
+                  <option value="medium">Medium Package (box size)</option>
+                  <option value="large">
+                    Large Package (furniture, appliances)
+                  </option>
+                  <option value="custom">Custom / Multiple Items</option>
+                </select>
+                <span class="form-help" id="itemTypeHelp">
+                  This helps us match you with the right delivery partner
+                </span>
+                <span class="form-error" id="itemTypeError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="itemWeight" class="form-label">
+                  Estimated Weight <span class="required">*</span>
+                </label>
+                <select
+                  id="itemWeight"
+                  name="itemWeight"
+                  class="form-select"
+                  required
+                  aria-required="true"
+                  aria-describedby="itemWeightHelp"
+                >
+                  <option value="">Select weight range</option>
+                  <option value="under5">Under 5kg (light)</option>
+                  <option value="5to20">5kg - 20kg (moderate)</option>
+                  <option value="20to50">20kg - 50kg (heavy)</option>
+                  <option value="over50">Over 50kg (very heavy)</option>
+                </select>
+                <span class="form-help" id="itemWeightHelp">
+                  Best estimate is fine — we'll confirm when collecting the item
+                </span>
+                <span class="form-error" id="itemWeightError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="specialInstructions" class="form-label">
+                  Special Instructions <span class="optional">(optional)</span>
+                </label>
+                <textarea
+                  id="specialInstructions"
+                  name="specialInstructions"
+                  class="form-textarea"
+                  rows="3"
+                  placeholder="e.g., fragile items, handle with care, preferred delivery time..."
+                  aria-describedby="specialInstructionsHelp"
+                ></textarea>
+                <span class="form-help" id="specialInstructionsHelp">
+                  E.g., fragile, time-sensitive, preferred drop-off hub location
+                </span>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="step2Back">
+                  Back
+                </button>
+                <button type="button" class="btn btn-primary" id="step2Next">
+                  Next
+                </button>
+              </div>
+            </div>
+
+            <!-- STEP 3: Contact & Urgency -->
+            <div class="form-step" data-step="3">
+              <div class="form-group">
+                <label for="customerName" class="form-label">
+                  Your Name <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="customerName"
+                  name="customerName"
+                  class="form-input"
+                  placeholder="e.g., Chukwudi Okafor"
+                  required
+                  aria-required="true"
+                  aria-describedby="customerNameHelp"
+                  minlength="2"
+                  autocomplete="name"
+                />
+                <span class="form-help" id="customerNameHelp">
+                  Your full name for coordinating pickup or delivery
+                </span>
+                <span class="form-error" id="customerNameError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="customerPhone" class="form-label">
+                  Phone Number <span class="required">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="customerPhone"
+                  name="customerPhone"
+                  class="form-input"
+                  placeholder="08012345678"
+                  required
+                  aria-required="true"
+                  aria-describedby="customerPhoneHelp"
+                  pattern="^0[7-9][0-1][0-9]{8}$"
+                  inputmode="numeric"
+                  autocomplete="tel"
+                  maxlength="11"
+                />
+                <span class="form-help" id="customerPhoneHelp">
+                  Nigerian mobile number (11 digits, starts with 070-091)
+                </span>
+                <span class="form-error" id="customerPhoneError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Delivery Speed <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="deliverySpeed"
+                      value="standard"
+                      class="radio-input"
+                      checked
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Standard</strong> (3-7 business days)
+                    </span>
+                  </label>
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="deliverySpeed"
+                      value="express"
+                      class="radio-input"
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Express</strong> (1-3 business days, subject to
+                      route availability)
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="step3Back">
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-submit"
+                  id="submitQuote"
+                >
+                  Get Quote
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2026 NgwaNgwa Delivery. Based in Enugu, delivering nationwide.
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="enuguLocations.js"></script>
+    <script src="locationAutocomplete.js"></script>
+    <script src="pricingCalculator.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

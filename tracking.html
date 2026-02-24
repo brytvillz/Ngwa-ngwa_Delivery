@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Track your NgwaNgwa Delivery shipment - Fast and reliable logistics service"
+    />
+    <title>Track Shipment | NgwaNgwa Delivery</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="tracking-styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="logo">
+            <a href="index.html" style="color: inherit; text-decoration: none">
+              NgwaNgwa<span>Delivery</span>
+            </a>
+          </h1>
+          <p class="tagline">Fast. Reliable. Local to National.</p>
+          <nav class="header-nav">
+            <a href="index.html" class="nav-link">Book Delivery</a>
+            <a href="tracking.html" class="nav-link nav-link-active"
+              >Track Shipment</a
+            >
+            <a href="my-bookings.html" class="nav-link">My Bookings</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Tracking Search Section -->
+        <section class="tracking-search-section" id="trackingSearchSection">
+          <div class="section-header">
+            <h2>Track Your Shipment</h2>
+            <p>Enter your booking reference to track your delivery</p>
+          </div>
+
+          <div class="tracking-search-form">
+            <form id="trackingForm" novalidate>
+              <div class="form-group">
+                <label for="referenceInput" class="form-label">
+                  Booking Reference <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="referenceInput"
+                  name="referenceInput"
+                  class="form-input tracking-input"
+                  placeholder="e.g., NGW-ENU-20260214-001"
+                  required
+                  aria-required="true"
+                  pattern="^NGW-ENU-\d{8}-\d{3}$"
+                  maxlength="23"
+                />
+                <span class="form-help">
+                  Format: NGW-ENU-YYYYMMDD-XXX (e.g., NGW-ENU-20260214-001)
+                </span>
+                <span class="form-error" id="referenceError"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-track">
+                🔍 Track Shipment
+              </button>
+            </form>
+          </div>
+
+          <!-- Quick Help -->
+          <div class="tracking-help">
+            <p class="help-title">📌 Where to find your reference?</p>
+            <ul class="help-list">
+              <li>Check your booking confirmation screen</li>
+              <li>Look for the SMS we sent to your phone</li>
+              <li>It starts with <strong>NGW-ENU-</strong></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Tracking Results Section (Hidden by default) -->
+        <section
+          class="tracking-results-section"
+          id="trackingResultsSection"
+          style="display: none"
+        >
+          <!-- Results will be dynamically inserted here -->
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2026 NgwaNgwa Delivery. Based in Enugu, delivering nationwide.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="trackingManager.js"></script>
+    <script src="statusUpdater.js"></script>
+    <script src="timelineRenderer.js"></script>
+  </body>
+</html>

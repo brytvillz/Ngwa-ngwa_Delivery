@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="View all your NgwaNgwa Delivery bookings - Fast and reliable logistics service"
+    />
+    <title>My Bookings | NgwaNgwa Delivery</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="tracking-styles.css" />
+    <link rel="stylesheet" href="bookings-styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="logo">
+            <a href="index.html" style="color: inherit; text-decoration: none">
+              NgwaNgwa<span>Delivery</span>
+            </a>
+          </h1>
+          <p class="tagline">Fast. Reliable. Local to National.</p>
+          <nav class="header-nav">
+            <a href="index.html" class="nav-link">Book Delivery</a>
+            <a href="tracking.html" class="nav-link">Track Shipment</a>
+            <a href="my-bookings.html" class="nav-link nav-link-active"
+              >My Bookings</a
+            >
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Page Header -->
+        <section class="page-header">
+          <h2 class="page-title">📦 My Bookings</h2>
+          <p class="page-subtitle">
+            View and track all your delivery requests in one place
+          </p>
+        </section>
+
+        <!-- Stats Overview -->
+        <section class="stats-section" id="statsSection">
+          <!-- Stats will be dynamically inserted -->
+        </section>
+
+        <!-- Filter Controls -->
+        <section class="filter-section">
+          <div class="filter-controls">
+            <button
+              class="filter-btn filter-btn-active"
+              data-filter="all"
+              id="filterAll"
+            >
+              All
+            </button>
+            <button class="filter-btn" data-filter="Booked" id="filterBooked">
+              Booked
+            </button>
+            <button
+              class="filter-btn"
+              data-filter="Awaiting Pickup"
+              id="filterAwaiting"
+            >
+              Awaiting Pickup
+            </button>
+            <button
+              class="filter-btn"
+              data-filter="Picked Up"
+              id="filterPickedUp"
+            >
+              Picked Up
+            </button>
+            <button
+              class="filter-btn"
+              data-filter="In Transit"
+              id="filterInTransit"
+            >
+              In Transit
+            </button>
+            <button
+              class="filter-btn"
+              data-filter="Delivered"
+              id="filterDelivered"
+            >
+              Delivered
+            </button>
+          </div>
+        </section>
+
+        <!-- Bookings List -->
+        <section class="bookings-section" id="bookingsSection">
+          <!-- Bookings will be dynamically inserted -->
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2026 NgwaNgwa Delivery. Based in Enugu, delivering nationwide.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="trackingManager.js"></script>
+    <script src="statusUpdater.js"></script>
+    <script src="timelineRenderer.js"></script>
+    <script src="bookingsManager.js"></script>
+  </body>
+</html>
