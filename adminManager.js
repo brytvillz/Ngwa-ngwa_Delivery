@@ -50,12 +50,19 @@ function updateStats() {
     delivered: allOrders.filter((o) => o.status === "Delivered").length,
   };
 
-  // Update stat cards
-  document.getElementById("statTotal").textContent = stats.total;
-  document.getElementById("statBooked").textContent = stats.booked;
-  document.getElementById("statInTransit").textContent =
-    stats.awaitingPickup + stats.pickedUp + stats.inTransit;
-  document.getElementById("statDelivered").textContent = stats.delivered;
+  // Update stat cards (with safety checks)
+  const statTotal = document.getElementById("statTotal");
+  const statBooked = document.getElementById("statBooked");
+  const statInTransit = document.getElementById("statInTransit");
+  const statDelivered = document.getElementById("statDelivered");
+
+  if (statTotal) statTotal.textContent = stats.total;
+  if (statBooked) statBooked.textContent = stats.booked;
+  if (statInTransit) {
+    statInTransit.textContent =
+      stats.awaitingPickup + stats.pickedUp + stats.inTransit;
+  }
+  if (statDelivered) statDelivered.textContent = stats.delivered;
 
   console.log("📊 Stats updated:", stats);
 }
@@ -105,6 +112,9 @@ function createOrderRow(order) {
   // Status badge color
   const statusClass = getStatusClass(order.status);
 
+  // Generate rider assignment UI
+  const riderAssignmentHTML = generateRiderAssignmentHTML(order);
+
   tr.innerHTML = `
         <td class="ref-cell">
             <strong>${order.reference}</strong>
@@ -138,6 +148,9 @@ function createOrderRow(order) {
                 <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
             </select>
         </td>
+        <td class="rider-cell">
+            ${riderAssignmentHTML}
+        </td>
         <td>${formattedDate}</td>
         <td>
             <button 
@@ -151,6 +164,73 @@ function createOrderRow(order) {
     `;
 
   return tr;
+}
+
+/**
+ * Generate rider assignment HTML based on order state
+ */
+function generateRiderAssignmentHTML(order) {
+  // Check if rider functions are available
+  if (
+    typeof getRiderById !== "function" ||
+    typeof getAvailableRiders !== "function"
+  ) {
+    return `<small class="text-muted">Loading riders...</small>`;
+  }
+
+  // If rider is already assigned
+  if (order.assignedRiderId) {
+    const rider = getRiderById(order.assignedRiderId);
+    if (rider) {
+      return `
+                <div class="assigned-rider">
+                    <div class="rider-name">🚴 ${rider.name}</div>
+                    <small class="rider-phone">${rider.phone}</small>
+                    <button 
+                        class="btn-unassign" 
+                        onclick="handleUnassignRider('${order.reference}')"
+                        title="Unassign rider"
+                    >
+                        ✕
+                    </button>
+                </div>
+            `;
+    }
+  }
+
+  // If no rider assigned, show dropdown + assign button
+  const availableRiders = getAvailableRiders();
+
+  if (availableRiders.length === 0) {
+    return `<small class="text-muted">No riders available</small>`;
+  }
+
+  return `
+        <div class="rider-assignment">
+            <select 
+                class="rider-select" 
+                id="riderSelect-${order.reference}"
+                data-reference="${order.reference}"
+            >
+                <option value="">Select rider...</option>
+                ${availableRiders
+                  .map(
+                    (rider) => `
+                    <option value="${rider.id}">
+                        ${rider.name} (${rider.vehicleType === "motorcycle" ? "🏍️" : rider.vehicleType === "van" ? "🚐" : "🚚"})
+                    </option>
+                `,
+                  )
+                  .join("")}
+            </select>
+            <button 
+                class="btn-assign" 
+                onclick="handleAssignRider('${order.reference}')"
+            >
+                Assign
+            </button>
+        </div>
+    `;
 }
 
 /**
@@ -181,30 +261,35 @@ function searchOrders(query) {
     filteredOrders = [...allOrders];
   } else {
     filteredOrders = allOrders.filter((order) => {
-      return (
-        order.reference.toLowerCase().includes(query) ||
-        order.customer.name.toLowerCase().includes(query) ||
-        order.customer.phone.includes(query)
-      );
+      const matchesReference = order.reference.toLowerCase().includes(query);
+      const matchesName = order.customer.name.toLowerCase().includes(query);
+      const matchesPhone = order.customer.phone.includes(query);
+
+      return matchesReference || matchesName || matchesPhone;
     });
+
+    console.log(`🔍 Searching for: "${query}"`);
+    console.log(`📦 Found ${filteredOrders.length} matching orders`);
   }
 
   // Apply current status filter
-  const statusFilter = document.getElementById("statusFilter").value;
-  if (statusFilter !== "all") {
+  const statusFilter = document.getElementById("statusFilter");
+  if (statusFilter && statusFilter.value !== "all") {
     filteredOrders = filteredOrders.filter(
-      (order) => order.status === statusFilter,
+      (order) => order.status === statusFilter.value,
     );
   }
 
   renderOrdersTable(filteredOrders);
-  console.log(`🔍 Search: "${query}" - Found ${filteredOrders.length} orders`);
 }
 
 /**
  * Filter orders by status
  */
 function filterByStatus(status) {
+  // Save filter to sessionStorage
+  sessionStorage.setItem("admin_status_filter", status);
+
   if (status === "all") {
     filteredOrders = [...allOrders];
   } else {
@@ -277,6 +362,101 @@ function handleStatusChange(selectElement) {
 window.handleStatusChange = handleStatusChange;
 
 // ===========================
+// RIDER ASSIGNMENT HANDLERS
+// ===========================
+
+/**
+ * Handle rider assignment button click
+ */
+function handleAssignRider(orderReference) {
+  const selectElement = document.getElementById(
+    `riderSelect-${orderReference}`,
+  );
+
+  if (!selectElement) {
+    alert("Rider selection not found!");
+    return;
+  }
+
+  const riderId = selectElement.value;
+
+  if (!riderId) {
+    alert("Please select a rider first!");
+    return;
+  }
+
+  // Get rider details for confirmation
+  const rider = getRiderById(riderId);
+  if (!rider) {
+    alert("Rider not found!");
+    return;
+  }
+
+  // Confirm assignment
+  const confirmAssignment = confirm(
+    `Assign ${rider.name} to order ${orderReference}?\n\nVehicle: ${rider.vehicleType}\nPhone: ${rider.phone}`,
+  );
+
+  if (!confirmAssignment) {
+    return;
+  }
+
+  // Assign rider using the global function
+  if (typeof assignRiderToOrder === "function") {
+    const success = assignRiderToOrder(orderReference, riderId);
+
+    if (success) {
+      // Reload and re-render
+      loadOrders();
+      updateStats();
+      renderOrdersTable(filteredOrders);
+
+      // Success feedback
+      console.log(`✅ Rider ${riderId} assigned to ${orderReference}`);
+    } else {
+      alert("Failed to assign rider. Please try again.");
+    }
+  } else {
+    alert("Rider assignment function not available.");
+  }
+}
+
+/**
+ * Handle rider unassignment button click
+ */
+function handleUnassignRider(orderReference) {
+  const confirmUnassign = confirm(
+    `Remove rider assignment from order ${orderReference}?`,
+  );
+
+  if (!confirmUnassign) {
+    return;
+  }
+
+  // Unassign rider using the global function
+  if (typeof unassignRiderFromOrder === "function") {
+    const success = unassignRiderFromOrder(orderReference);
+
+    if (success) {
+      // Reload and re-render
+      loadOrders();
+      updateStats();
+      renderOrdersTable(filteredOrders);
+
+      console.log(`✅ Rider unassigned from ${orderReference}`);
+    } else {
+      alert("Failed to unassign rider. Please try again.");
+    }
+  } else {
+    alert("Rider unassignment function not available.");
+  }
+}
+
+// Make globally available
+window.handleAssignRider = handleAssignRider;
+window.handleUnassignRider = handleUnassignRider;
+
+// ===========================
 // VIEW ORDER DETAILS
 // ===========================
 
@@ -288,6 +468,15 @@ function viewOrderDetails(reference) {
   if (!order) {
     alert("Order not found!");
     return;
+  }
+
+  // Get assigned rider details if exists
+  let riderInfo = "No rider assigned";
+  if (order.assignedRiderId) {
+    const rider = getRiderById(order.assignedRiderId);
+    if (rider) {
+      riderInfo = `${rider.name}\nPhone: ${rider.phone}\nVehicle: ${rider.vehicleType}`;
+    }
   }
 
   const details = `
@@ -312,10 +501,13 @@ Type: ${order.item.typeLabel}
 Weight: ${order.item.weightLabel}
 ${order.item.specialInstructions ? `Instructions: ${order.item.specialInstructions}` : ""}
 
+🚴 ASSIGNED RIDER
+${riderInfo}
+
 ${order.pricing ? `💰 PRICING\nEstimated: ₦${order.pricing.total.toLocaleString("en-NG")}` : ""}
 
 📅 TIMELINE
-${order.timeline.map((t) => `• ${t.stage}: ${new Date(t.timestamp).toLocaleString("en-GB")}`).join("\n")}
+${order.timeline.map((t) => `• ${t.stage}: ${new Date(t.timestamp).toLocaleString("en-GB")}${t.details ? ` - ${t.details}` : ""}`).join("\n")}
     `.trim();
 
   alert(details);
@@ -337,11 +529,25 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update stats
   updateStats();
 
-  // Render table
-  renderOrdersTable();
+  // Get status filter element
+  const statusFilter = document.getElementById("statusFilter");
+  const searchInput = document.getElementById("searchInput");
+
+  // Restore previous filter selection
+  const savedFilter = sessionStorage.getItem("admin_status_filter");
+
+  if (savedFilter && statusFilter) {
+    console.log(`📋 Restoring filter: ${savedFilter}`);
+    statusFilter.value = savedFilter;
+    // Apply the filter
+    filterByStatus(savedFilter);
+  } else {
+    // Render table with all orders
+    console.log("📋 Rendering all orders");
+    renderOrdersTable();
+  }
 
   // Set up search
-  const searchInput = document.getElementById("searchInput");
   if (searchInput) {
     searchInput.addEventListener("input", function (e) {
       searchOrders(e.target.value);
@@ -349,7 +555,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Set up status filter
-  const statusFilter = document.getElementById("statusFilter");
   if (statusFilter) {
     statusFilter.addEventListener("change", function (e) {
       filterByStatus(e.target.value);

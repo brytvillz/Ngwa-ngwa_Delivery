@@ -104,13 +104,15 @@
   background: var(--color-white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  overflow: hidden;
+  overflow-x: auto; /* Allow horizontal scroll on mobile */
+  overflow-y: visible; /* Allow dropdown to overflow vertically */
 }
 
 .orders-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9375rem;
+  min-width: 900px; /* Ensure table doesn't collapse too much */
 }
 
 .orders-table thead {
@@ -180,6 +182,9 @@
   transition: all 0.2s ease;
   width: 100%;
   max-width: 160px;
+  background: white;
+  position: relative;
+  z-index: 1;
 }
 
 .status-select:hover {
@@ -190,6 +195,14 @@
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(26, 95, 58, 0.1);
+}
+
+/* Ensure dropdown options are visible */
+.status-select option {
+  background: white;
+  color: #333;
+  padding: 0.5rem;
+  font-weight: 600;
 }
 
 /* Status Colors */
@@ -278,6 +291,109 @@
 }
 
 /* ===========================
+   RIDER ASSIGNMENT STYLES
+   =========================== */
+
+.rider-cell {
+  min-width: 180px;
+}
+
+.rider-assignment {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.rider-select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 2px solid var(--color-gray-light);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.rider-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.btn-assign {
+  padding: 0.5rem 0.75rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-assign:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-assign:active {
+  transform: translateY(0);
+}
+
+.assigned-rider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  padding: 0.5rem;
+  background: var(--color-off-white);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary);
+}
+
+.rider-name {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
+.rider-phone {
+  color: var(--color-gray);
+  font-size: 0.75rem;
+}
+
+.btn-unassign {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-unassign:hover {
+  background: #e55a28;
+  transform: scale(1.1);
+}
+
+.text-muted {
+  color: var(--color-gray);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* ===========================
    RESPONSIVE DESIGN
    =========================== */
 
@@ -312,6 +428,23 @@
   .orders-table th,
   .orders-table td {
     padding: var(--spacing-sm);
+    font-size: 0.8125rem;
+  }
+
+  .rider-assignment {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rider-select {
+    width: 100%;
+  }
+
+  .btn-assign {
+    width: 100%;
+  }
+
+  .assigned-rider {
     font-size: 0.8125rem;
   }
 }

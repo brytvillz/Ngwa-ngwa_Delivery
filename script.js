@@ -469,6 +469,9 @@ function collectFormData() {
     status: "Booked", // Booked, Awaiting Pickup, Picked Up, In Transit, Delivered
     submittedAt: new Date().toISOString(),
 
+    // Rider Assignment
+    assignedRiderId: null, // Will be assigned by admin
+
     // Tracking Timeline
     timeline: [
       {

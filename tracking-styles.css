@@ -199,6 +199,68 @@
   font-style: italic;
 }
 
+/* Rider Info Card */
+.rider-info-card {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.rider-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.rider-heading {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.rider-details {
+  background-color: var(--color-off-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.rider-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.rider-vehicle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  font-size: 1rem;
+  color: var(--color-dark);
+}
+
+.vehicle-icon {
+  font-size: 1.5rem;
+}
+
+.vehicle-type {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.rider-note {
+  font-size: 0.9375rem;
+  margin: 0;
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
 /* ===========================
    TIMELINE STYLES
    =========================== */

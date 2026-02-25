@@ -205,8 +205,8 @@ function generateTrackingResultsHTML(booking) {
                         <span class="summary-value">${booking.customer.name}</span>
                     </div>
                     <div class="summary-item">
-                        <span class="summary-label">Phone:</span>
-                        <span class="summary-value">${booking.customer.phone}</span>
+                        <span class="summary-label">Rider:</span>
+                        <span class="summary-value">${getRiderDisplayText(booking.assignedRiderId)}</span>
                     </div>
                     ${
                       booking.item.specialInstructions
@@ -328,4 +328,70 @@ function clearTrackingError() {
     errorElement.textContent = "";
     errorElement.style.display = "none";
   }
+}
+
+/**
+ * Get rider display text (simple one-liner)
+ */
+function getRiderDisplayText(riderId) {
+  // No rider assigned
+  if (!riderId) {
+    return "Awaiting rider assignment";
+  }
+
+  // Check if getRiderById function is available
+  if (typeof getRiderById !== "function") {
+    return "Awaiting rider assignment";
+  }
+
+  // Get rider details
+  const rider = getRiderById(riderId);
+
+  if (!rider) {
+    return "Awaiting rider assignment";
+  }
+
+  // Format: "Name (Vehicle)"
+  const vehicleShort =
+    rider.vehicleType === "motorcycle"
+      ? "Bike"
+      : rider.vehicleType === "van"
+        ? "Van"
+        : "Truck";
+
+  return `${rider.name} (${vehicleShort})`;
+}
+
+/**
+ * Render assigned rider information
+ */
+function renderRiderInfo(riderId) {
+  // Check if getRiderById function is available
+  if (typeof getRiderById !== "function") {
+    console.warn("getRiderById function not available");
+    return "";
+  }
+
+  // Get rider details
+  const rider = getRiderById(riderId);
+
+  if (!rider) {
+    console.warn(`Rider ${riderId} not found`);
+    return "";
+  }
+
+  return `
+    <div class="rider-info-card">
+      <div class="rider-icon">🚴‍♂️</div>
+      <h3 class="rider-heading">Your Delivery Rider</h3>
+      <div class="rider-details">
+        <div class="rider-name">${rider.name}</div>
+        <div class="rider-vehicle">
+          <span class="vehicle-icon">${rider.vehicleType === "motorcycle" ? "🏍️" : rider.vehicleType === "van" ? "🚐" : "🚚"}</span>
+          <span class="vehicle-type">${rider.vehicleType.charAt(0).toUpperCase() + rider.vehicleType.slice(1)}</span>
+        </div>
+      </div>
+      <p class="rider-note">📞 Your rider will contact you when nearby for delivery.</p>
+    </div>
+  `;
 }
