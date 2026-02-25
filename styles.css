@@ -909,5 +909,117 @@ body {
 }
 
 /* ===========================
+   MOBILE NAVIGATION FIX (518px and below)
+   =========================== */
+
+@media (max-width: 518px) {
+  /* Compact header to prevent vertical scrolling */
+  .header {
+    padding: 0.5rem 0;
+  }
+
+  .header-content {
+    padding: 0;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tagline {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .header-nav {
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    padding-top: 0.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.5rem;
+    white-space: nowrap;
+  }
+
+  /* Ensure container has padding */
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  /* FIX ORDER SUMMARY RESPONSIVENESS */
+  .booking-summary {
+    padding: var(--spacing-sm);
+  }
+
+  .booking-summary h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .summary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: var(--spacing-sm) 0;
+  }
+
+  .summary-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .summary-value {
+    font-size: 0.875rem;
+    text-align: left;
+    max-width: 100%;
+    padding-left: 0.5rem;
+    word-break: break-word;
+  }
+
+  .next-steps {
+    padding: var(--spacing-sm);
+    font-size: 0.875rem;
+  }
+
+  .next-steps h4 {
+    font-size: 1rem;
+  }
+
+  .next-steps ul {
+    padding-left: 1.25rem;
+  }
+
+  .next-steps li {
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Extra small screens (below 400px) */
+@media (max-width: 400px) {
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  .tagline {
+    font-size: 0.7rem;
+  }
+
+  .nav-link {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .header-nav {
+    gap: 0.2rem;
+  }
+}
+
+/* ===========================
    AUTOCOMPLETE STYLES
    =========================== */
