@@ -1,0 +1,1308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NgwaNgwa Delivery - Pitch Deck</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: #f8f9fa;
+        overflow: hidden;
+      }
+
+      .presentation {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      .slide {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        padding: 4rem;
+        background: white;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .slide.active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+        z-index: 1;
+      }
+
+      /* Navigation */
+      .nav-controls {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 1rem;
+        z-index: 100;
+      }
+
+      .nav-btn {
+        padding: 0.75rem 1.5rem;
+        background: #1a5f3a;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn:hover {
+        background: #134529;
+        transform: translateY(-2px);
+      }
+
+      .nav-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .slide-counter {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        font-size: 0.875rem;
+        color: #6c757d;
+        z-index: 100;
+      }
+
+      /* Typography */
+      .slide h1 {
+        font-size: 3.5rem;
+        color: #1a5f3a;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .slide h2 {
+        font-size: 2.5rem;
+        color: #1a5f3a;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+
+      .slide h3 {
+        font-size: 1.75rem;
+        color: #1a5f3a;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        color: #ff6b35;
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+
+      .slide p {
+        font-size: 1.25rem;
+        color: #212529;
+        line-height: 1.8;
+        max-width: 900px;
+        text-align: center;
+      }
+
+      /* Title Slide */
+      .title-slide {
+        background: linear-gradient(135deg, #1a5f3a 0%, #134529 100%);
+        color: white;
+      }
+
+      .title-slide h1 {
+        color: white;
+        font-size: 4.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .title-slide .subtitle {
+        color: #ff6b35;
+        font-size: 2rem;
+      }
+
+      .title-slide p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 2rem;
+      }
+
+      /* Content Layouts */
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .content-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .card {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 12px;
+        border-left: 4px solid #1a5f3a;
+      }
+
+      .card h3 {
+        margin-bottom: 1rem;
+        color: #1a5f3a;
+      }
+
+      .card p {
+        text-align: left;
+        font-size: 1.125rem;
+      }
+
+      .card ul {
+        list-style: none;
+        text-align: left;
+      }
+
+      .card li {
+        font-size: 1.125rem;
+        color: #212529;
+        margin-bottom: 0.75rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .card li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #1a5f3a;
+        font-weight: bold;
+      }
+
+      /* Stats */
+      .stats-container {
+        display: flex;
+        gap: 3rem;
+        margin-top: 2rem;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 4rem;
+        font-weight: 700;
+        color: #ff6b35;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 1.25rem;
+        color: #6c757d;
+      }
+
+      /* List Items */
+      .big-list {
+        list-style: none;
+        max-width: 800px;
+      }
+
+      .big-list li {
+        font-size: 1.5rem;
+        color: #212529;
+        margin-bottom: 1.5rem;
+        padding-left: 2rem;
+        position: relative;
+        text-align: left;
+      }
+
+      .big-list li:before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #ff6b35;
+        font-weight: bold;
+        font-size: 1.75rem;
+      }
+
+      /* Highlight Box */
+      .highlight-box {
+        background: #fff3cd;
+        border: 3px solid #ff6b35;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 800px;
+      }
+
+      .highlight-box p {
+        font-size: 1.5rem;
+        color: #212529;
+        font-weight: 600;
+      }
+
+      /* Contact Info */
+      .contact-info {
+        margin-top: 2rem;
+      }
+
+      .contact-info p {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* QR Code */
+      .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 1rem 0;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 12px;
+        border: 2px solid #1a5f3a;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .qr-code {
+        width: 180px;
+        height: 180px;
+        padding: 0.5rem;
+        background: white;
+        border-radius: 8px;
+      }
+
+      .qr-label {
+        margin-top: 0.75rem;
+        font-size: 1rem;
+        color: #1a5f3a;
+        font-weight: 600;
+      }
+
+      .qr-url {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        word-break: break-all;
+        text-align: center;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .slide {
+          padding: 2rem;
+        }
+
+        .slide h1 {
+          font-size: 2.5rem;
+        }
+
+        .slide h2 {
+          font-size: 2rem;
+        }
+
+        .title-slide h1 {
+          font-size: 3rem;
+        }
+
+        .content-grid,
+        .content-grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        .nav-controls {
+          bottom: 1rem;
+          right: 1rem;
+        }
+
+        .slide-counter {
+          bottom: 1rem;
+          left: 1rem;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        .nav-controls,
+        .slide-counter {
+          display: none;
+        }
+
+        .slide {
+          page-break-after: always;
+          display: block !important;
+          opacity: 1 !important;
+          position: relative !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation">
+      <!-- Slide 1: Title -->
+      <div class="slide active title-slide">
+        <h1>NgwaNgwa<span style="color: #ff6b35">Delivery</span></h1>
+        <p class="subtitle">Fast. Reliable. Local to National.</p>
+        <p>
+          Building Enugu's logistics infrastructure, one delivery at a time.
+        </p>
+      </div>
+
+      <!-- Slide 2: The Problem -->
+      <div class="slide">
+        <h2>The Problem</h2>
+        <div class="content-grid">
+          <div class="card">
+            <h3>🚫 Unreliable Delivery</h3>
+            <p>
+              Customers struggle to find trustworthy logistics partners for both
+              local and interstate deliveries.
+            </p>
+          </div>
+          <div class="card">
+            <h3>📍 Limited Coverage</h3>
+            <p>
+              Most logistics services focus on Lagos, leaving Enugu and the
+              Southeast underserved.
+            </p>
+          </div>
+          <div class="card">
+            <h3>🔍 No Transparency</h3>
+            <p>
+              Lack of real-time tracking and communication creates anxiety and
+              mistrust.
+            </p>
+          </div>
+          <div class="card">
+            <h3>💰 Unclear Pricing</h3>
+            <p>
+              Hidden fees and unpredictable costs make budgeting difficult for
+              individuals and businesses.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Our Solution -->
+      <div class="slide">
+        <h2>Our Solution</h2>
+        <p class="subtitle">
+          NgwaNgwa Delivery connects customers with trusted riders
+        </p>
+        <ul class="big-list">
+          <li>
+            <strong>Enugu Hub:</strong> Central drop-off and collection point
+            for convenience
+          </li>
+          <li>
+            <strong>Rider Network:</strong> Vetted delivery partners across
+            Nigeria
+          </li>
+          <li>
+            <strong>Real-Time Tracking:</strong> Know exactly where your package
+            is, always
+          </li>
+          <li>
+            <strong>Flexible Options:</strong> Drop-off at hub or request rider
+            pickup
+          </li>
+          <li>
+            <strong>Transparent Pricing:</strong> Clear quotes with no hidden
+            fees
+          </li>
+        </ul>
+      </div>
+
+      <!-- Slide 4: How It Works -->
+      <div class="slide">
+        <h2>How It Works</h2>
+        <div class="content-grid-3">
+          <div class="card">
+            <h3>1️⃣ Book</h3>
+            <p>
+              Customer requests a quote online. We provide instant pricing based
+              on distance, weight, and urgency.
+            </p>
+          </div>
+          <div class="card">
+            <h3>2️⃣ Drop-off/Pickup</h3>
+            <p>
+              Customer drops item at our Enugu hub OR we send a rider to collect
+              (subject to availability).
+            </p>
+          </div>
+          <div class="card">
+            <h3>3️⃣ Assign Rider</h3>
+            <p>
+              Admin assigns trusted rider with appropriate vehicle (bike, van,
+              truck) based on package size.
+            </p>
+          </div>
+          <div class="card">
+            <h3>4️⃣ Track</h3>
+            <p>
+              Customer receives reference number and can track delivery status
+              in real-time via our platform.
+            </p>
+          </div>
+          <div class="card">
+            <h3>5️⃣ Deliver</h3>
+            <p>
+              Rider delivers package. Customer is notified when nearby and upon
+              successful delivery.
+            </p>
+          </div>
+          <div class="card">
+            <h3>6️⃣ Confirm</h3>
+            <p>
+              Customer confirms receipt. Payment is processed. Rider gets paid.
+              Feedback collected.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Market Opportunity -->
+      <div class="slide">
+        <h2>Market Opportunity</h2>
+        <div class="stats-container">
+          <div class="stat">
+            <span class="stat-number">3.8M</span>
+            <span class="stat-label">Population in Enugu State</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">Growing</span>
+            <span class="stat-label">E-commerce adoption</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">₦XX B</span>
+            <span class="stat-label">Nigerian logistics market</span>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 3rem">
+          <p>
+            🎯 Target: Individuals, small businesses, and e-commerce sellers in
+            Enugu who need reliable delivery for local and interstate shipments.
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 6: Traction -->
+      <div class="slide">
+        <h2>Traction & Momentum</h2>
+        <div class="content-grid">
+          <div class="card">
+            <h3>🚀 MVP Built in 15 Days</h3>
+            <ul>
+              <li>Full booking system</li>
+              <li>Real-time tracking</li>
+              <li>Rider management panel</li>
+              <li>Admin dashboard</li>
+              <li>Mobile-optimized</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>📊 Current Status</h3>
+            <ul>
+              <li>Platform fully functional</li>
+              <li>Testing with pilot users</li>
+              <li>Positive early reception</li>
+              <li>Refining based on feedback</li>
+              <li>Ready to scale</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 2rem">
+          <p>
+            This week's goal: Onboard 5 real users. Next step: Build based on
+            actual feedback, not assumptions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 7: Business Model -->
+      <div class="slide">
+        <h2>Business Model</h2>
+        <div class="content-grid">
+          <div class="card">
+            <h3>💵 Revenue Streams</h3>
+            <ul>
+              <li>Commission on each delivery (15-20%)</li>
+              <li>Premium delivery speeds (express)</li>
+              <li>Business accounts with volume discounts</li>
+              <li>Value-added services (insurance, packaging)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>📈 Unit Economics</h3>
+            <ul>
+              <li>Average delivery fee: ₦2,000 - ₦15,000</li>
+              <li>Platform commission: ₦300 - ₦3,000</li>
+              <li>Rider gets 80-85% of fee</li>
+              <li>Low overhead (no fleet to maintain)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Competitive Advantage -->
+      <div class="slide">
+        <h2>Why NgwaNgwa Will Win</h2>
+        <ul class="big-list">
+          <li>
+            <strong>Local Focus:</strong> Deep understanding of Enugu market and
+            logistics challenges
+          </li>
+          <li>
+            <strong>Tech-Forward:</strong> Modern platform built for reliability
+            and transparency
+          </li>
+          <li>
+            <strong>Rider-First:</strong> Fair payment and support for delivery
+            partners
+          </li>
+          <li>
+            <strong>Customer-Centric:</strong> Real-time tracking, clear
+            pricing, responsive support
+          </li>
+          <li>
+            <strong>Scalable Model:</strong> Easy to expand to other Southeast
+            cities
+          </li>
+        </ul>
+      </div>
+
+      <!-- Slide 9: Roadmap -->
+      <div class="slide">
+        <h2>What's Next</h2>
+        <div class="content-grid-3">
+          <div class="card">
+            <h3>Now (Weeks 1-4)</h3>
+            <ul>
+              <li>Pilot with 5-20 users</li>
+              <li>Gather feedback</li>
+              <li>Refine platform</li>
+              <li>Build trust locally</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Next (Months 2-6)</h3>
+            <ul>
+              <li>Onboard 50+ riders</li>
+              <li>Scale to 500+ deliveries/month</li>
+              <li>Launch marketing campaigns</li>
+              <li>Partner with businesses</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Future (Year 1+)</h3>
+            <ul>
+              <li>Expand to Onitsha, Awka, Aba</li>
+              <li>Add same-day delivery</li>
+              <li>Integrate with e-commerce</li>
+              <li>Build brand across Southeast</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: The Ask -->
+      <div class="slide" style="padding: 2rem 4rem; overflow-y: auto">
+        <h2 style="margin-bottom: 1rem">The Ask</h2>
+        <div class="highlight-box" style="margin-bottom: 1.5rem">
+          <p style="font-size: 1.5rem; margin-bottom: 1rem">
+            💡 Seeking: Mentorship, Early Users, and Strategic Partnerships
+          </p>
+          <p style="font-size: 1.125rem">
+            We're not looking for funding yet. We're looking for validation,
+            feedback, and connections to help us grow organically.
+          </p>
+        </div>
+
+        <div class="qr-container" style="margin: 1rem 0">
+          <div class="qr-code">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29">
+              <rect width="29" height="29" fill="#ffffff" />
+              <g fill="#000000">
+                <!-- QR Code pattern for the URL -->
+                <rect x="0" y="0" width="1" height="1" />
+                <rect x="1" y="0" width="1" height="1" />
+                <rect x="2" y="0" width="1" height="1" />
+                <rect x="3" y="0" width="1" height="1" />
+                <rect x="4" y="0" width="1" height="1" />
+                <rect x="5" y="0" width="1" height="1" />
+                <rect x="6" y="0" width="1" height="1" />
+                <rect x="8" y="0" width="1" height="1" />
+                <rect x="9" y="0" width="1" height="1" />
+                <rect x="10" y="0" width="1" height="1" />
+                <rect x="12" y="0" width="1" height="1" />
+                <rect x="13" y="0" width="1" height="1" />
+                <rect x="16" y="0" width="1" height="1" />
+                <rect x="18" y="0" width="1" height="1" />
+                <rect x="20" y="0" width="1" height="1" />
+                <rect x="22" y="0" width="1" height="1" />
+                <rect x="23" y="0" width="1" height="1" />
+                <rect x="24" y="0" width="1" height="1" />
+                <rect x="25" y="0" width="1" height="1" />
+                <rect x="26" y="0" width="1" height="1" />
+                <rect x="27" y="0" width="1" height="1" />
+                <rect x="28" y="0" width="1" height="1" />
+
+                <rect x="0" y="1" width="1" height="1" />
+                <rect x="6" y="1" width="1" height="1" />
+                <rect x="8" y="1" width="1" height="1" />
+                <rect x="9" y="1" width="1" height="1" />
+                <rect x="10" y="1" width="1" height="1" />
+                <rect x="14" y="1" width="1" height="1" />
+                <rect x="15" y="1" width="1" height="1" />
+                <rect x="16" y="1" width="1" height="1" />
+                <rect x="19" y="1" width="1" height="1" />
+                <rect x="22" y="1" width="1" height="1" />
+                <rect x="28" y="1" width="1" height="1" />
+
+                <rect x="0" y="2" width="1" height="1" />
+                <rect x="2" y="2" width="1" height="1" />
+                <rect x="3" y="2" width="1" height="1" />
+                <rect x="4" y="2" width="1" height="1" />
+                <rect x="6" y="2" width="1" height="1" />
+                <rect x="8" y="2" width="1" height="1" />
+                <rect x="10" y="2" width="1" height="1" />
+                <rect x="11" y="2" width="1" height="1" />
+                <rect x="12" y="2" width="1" height="1" />
+                <rect x="14" y="2" width="1" height="1" />
+                <rect x="16" y="2" width="1" height="1" />
+                <rect x="17" y="2" width="1" height="1" />
+                <rect x="18" y="2" width="1" height="1" />
+                <rect x="19" y="2" width="1" height="1" />
+                <rect x="22" y="2" width="1" height="1" />
+                <rect x="24" y="2" width="1" height="1" />
+                <rect x="25" y="2" width="1" height="1" />
+                <rect x="26" y="2" width="1" height="1" />
+                <rect x="28" y="2" width="1" height="1" />
+
+                <rect x="0" y="3" width="1" height="1" />
+                <rect x="2" y="3" width="1" height="1" />
+                <rect x="3" y="3" width="1" height="1" />
+                <rect x="4" y="3" width="1" height="1" />
+                <rect x="6" y="3" width="1" height="1" />
+                <rect x="10" y="3" width="1" height="1" />
+                <rect x="14" y="3" width="1" height="1" />
+                <rect x="16" y="3" width="1" height="1" />
+                <rect x="18" y="3" width="1" height="1" />
+                <rect x="22" y="3" width="1" height="1" />
+                <rect x="24" y="3" width="1" height="1" />
+                <rect x="25" y="3" width="1" height="1" />
+                <rect x="26" y="3" width="1" height="1" />
+                <rect x="28" y="3" width="1" height="1" />
+
+                <rect x="0" y="4" width="1" height="1" />
+                <rect x="2" y="4" width="1" height="1" />
+                <rect x="3" y="4" width="1" height="1" />
+                <rect x="4" y="4" width="1" height="1" />
+                <rect x="6" y="4" width="1" height="1" />
+                <rect x="8" y="4" width="1" height="1" />
+                <rect x="12" y="4" width="1" height="1" />
+                <rect x="13" y="4" width="1" height="1" />
+                <rect x="14" y="4" width="1" height="1" />
+                <rect x="16" y="4" width="1" height="1" />
+                <rect x="18" y="4" width="1" height="1" />
+                <rect x="19" y="4" width="1" height="1" />
+                <rect x="22" y="4" width="1" height="1" />
+                <rect x="24" y="4" width="1" height="1" />
+                <rect x="25" y="4" width="1" height="1" />
+                <rect x="26" y="4" width="1" height="1" />
+                <rect x="28" y="4" width="1" height="1" />
+
+                <rect x="0" y="5" width="1" height="1" />
+                <rect x="6" y="5" width="1" height="1" />
+                <rect x="8" y="5" width="1" height="1" />
+                <rect x="10" y="5" width="1" height="1" />
+                <rect x="11" y="5" width="1" height="1" />
+                <rect x="12" y="5" width="1" height="1" />
+                <rect x="14" y="5" width="1" height="1" />
+                <rect x="15" y="5" width="1" height="1" />
+                <rect x="19" y="5" width="1" height="1" />
+                <rect x="22" y="5" width="1" height="1" />
+                <rect x="28" y="5" width="1" height="1" />
+
+                <rect x="0" y="6" width="1" height="1" />
+                <rect x="1" y="6" width="1" height="1" />
+                <rect x="2" y="6" width="1" height="1" />
+                <rect x="3" y="6" width="1" height="1" />
+                <rect x="4" y="6" width="1" height="1" />
+                <rect x="5" y="6" width="1" height="1" />
+                <rect x="6" y="6" width="1" height="1" />
+                <rect x="8" y="6" width="1" height="1" />
+                <rect x="10" y="6" width="1" height="1" />
+                <rect x="12" y="6" width="1" height="1" />
+                <rect x="14" y="6" width="1" height="1" />
+                <rect x="16" y="6" width="1" height="1" />
+                <rect x="18" y="6" width="1" height="1" />
+                <rect x="20" y="6" width="1" height="1" />
+                <rect x="22" y="6" width="1" height="1" />
+                <rect x="23" y="6" width="1" height="1" />
+                <rect x="24" y="6" width="1" height="1" />
+                <rect x="25" y="6" width="1" height="1" />
+                <rect x="26" y="6" width="1" height="1" />
+                <rect x="27" y="6" width="1" height="1" />
+                <rect x="28" y="6" width="1" height="1" />
+
+                <rect x="8" y="7" width="1" height="1" />
+                <rect x="9" y="7" width="1" height="1" />
+                <rect x="10" y="7" width="1" height="1" />
+                <rect x="12" y="7" width="1" height="1" />
+                <rect x="13" y="7" width="1" height="1" />
+                <rect x="15" y="7" width="1" height="1" />
+                <rect x="16" y="7" width="1" height="1" />
+                <rect x="19" y="7" width="1" height="1" />
+
+                <rect x="1" y="8" width="1" height="1" />
+                <rect x="2" y="8" width="1" height="1" />
+                <rect x="5" y="8" width="1" height="1" />
+                <rect x="8" y="8" width="1" height="1" />
+                <rect x="9" y="8" width="1" height="1" />
+                <rect x="10" y="8" width="1" height="1" />
+                <rect x="11" y="8" width="1" height="1" />
+                <rect x="13" y="8" width="1" height="1" />
+                <rect x="14" y="8" width="1" height="1" />
+                <rect x="16" y="8" width="1" height="1" />
+                <rect x="17" y="8" width="1" height="1" />
+                <rect x="19" y="8" width="1" height="1" />
+                <rect x="21" y="8" width="1" height="1" />
+                <rect x="24" y="8" width="1" height="1" />
+                <rect x="27" y="8" width="1" height="1" />
+
+                <rect x="0" y="9" width="1" height="1" />
+                <rect x="2" y="9" width="1" height="1" />
+                <rect x="3" y="9" width="1" height="1" />
+                <rect x="5" y="9" width="1" height="1" />
+                <rect x="6" y="9" width="1" height="1" />
+                <rect x="9" y="9" width="1" height="1" />
+                <rect x="10" y="9" width="1" height="1" />
+                <rect x="11" y="9" width="1" height="1" />
+                <rect x="15" y="9" width="1" height="1" />
+                <rect x="17" y="9" width="1" height="1" />
+                <rect x="19" y="9" width="1" height="1" />
+                <rect x="21" y="9" width="1" height="1" />
+                <rect x="23" y="9" width="1" height="1" />
+                <rect x="25" y="9" width="1" height="1" />
+                <rect x="26" y="9" width="1" height="1" />
+                <rect x="27" y="9" width="1" height="1" />
+
+                <rect x="0" y="10" width="1" height="1" />
+                <rect x="2" y="10" width="1" height="1" />
+                <rect x="3" y="10" width="1" height="1" />
+                <rect x="6" y="10" width="1" height="1" />
+                <rect x="8" y="10" width="1" height="1" />
+                <rect x="9" y="10" width="1" height="1" />
+                <rect x="11" y="10" width="1" height="1" />
+                <rect x="12" y="10" width="1" height="1" />
+                <rect x="13" y="10" width="1" height="1" />
+                <rect x="14" y="10" width="1" height="1" />
+                <rect x="15" y="10" width="1" height="1" />
+                <rect x="17" y="10" width="1" height="1" />
+                <rect x="19" y="10" width="1" height="1" />
+                <rect x="20" y="10" width="1" height="1" />
+                <rect x="21" y="10" width="1" height="1" />
+                <rect x="22" y="10" width="1" height="1" />
+                <rect x="24" y="10" width="1" height="1" />
+                <rect x="25" y="10" width="1" height="1" />
+
+                <rect x="0" y="11" width="1" height="1" />
+                <rect x="3" y="11" width="1" height="1" />
+                <rect x="4" y="11" width="1" height="1" />
+                <rect x="9" y="11" width="1" height="1" />
+                <rect x="11" y="11" width="1" height="1" />
+                <rect x="12" y="11" width="1" height="1" />
+                <rect x="13" y="11" width="1" height="1" />
+                <rect x="16" y="11" width="1" height="1" />
+                <rect x="18" y="11" width="1" height="1" />
+                <rect x="19" y="11" width="1" height="1" />
+                <rect x="21" y="11" width="1" height="1" />
+                <rect x="22" y="11" width="1" height="1" />
+                <rect x="23" y="11" width="1" height="1" />
+                <rect x="24" y="11" width="1" height="1" />
+                <rect x="26" y="11" width="1" height="1" />
+                <rect x="27" y="11" width="1" height="1" />
+
+                <rect x="0" y="12" width="1" height="1" />
+                <rect x="1" y="12" width="1" height="1" />
+                <rect x="2" y="12" width="1" height="1" />
+                <rect x="3" y="12" width="1" height="1" />
+                <rect x="5" y="12" width="1" height="1" />
+                <rect x="8" y="12" width="1" height="1" />
+                <rect x="10" y="12" width="1" height="1" />
+                <rect x="13" y="12" width="1" height="1" />
+                <rect x="14" y="12" width="1" height="1" />
+                <rect x="15" y="12" width="1" height="1" />
+                <rect x="16" y="12" width="1" height="1" />
+                <rect x="17" y="12" width="1" height="1" />
+                <rect x="18" y="12" width="1" height="1" />
+                <rect x="19" y="12" width="1" height="1" />
+                <rect x="20" y="12" width="1" height="1" />
+                <rect x="21" y="12" width="1" height="1" />
+                <rect x="23" y="12" width="1" height="1" />
+                <rect x="24" y="12" width="1" height="1" />
+                <rect x="25" y="12" width="1" height="1" />
+                <rect x="26" y="12" width="1" height="1" />
+                <rect x="28" y="12" width="1" height="1" />
+
+                <rect x="1" y="13" width="1" height="1" />
+                <rect x="4" y="13" width="1" height="1" />
+                <rect x="5" y="13" width="1" height="1" />
+                <rect x="6" y="13" width="1" height="1" />
+                <rect x="8" y="13" width="1" height="1" />
+                <rect x="10" y="13" width="1" height="1" />
+                <rect x="11" y="13" width="1" height="1" />
+                <rect x="12" y="13" width="1" height="1" />
+                <rect x="14" y="13" width="1" height="1" />
+                <rect x="17" y="13" width="1" height="1" />
+                <rect x="18" y="13" width="1" height="1" />
+                <rect x="19" y="13" width="1" height="1" />
+                <rect x="22" y="13" width="1" height="1" />
+                <rect x="23" y="13" width="1" height="1" />
+                <rect x="24" y="13" width="1" height="1" />
+                <rect x="25" y="13" width="1" height="1" />
+                <rect x="27" y="13" width="1" height="1" />
+
+                <rect x="0" y="14" width="1" height="1" />
+                <rect x="2" y="14" width="1" height="1" />
+                <rect x="5" y="14" width="1" height="1" />
+                <rect x="6" y="14" width="1" height="1" />
+                <rect x="10" y="14" width="1" height="1" />
+                <rect x="11" y="14" width="1" height="1" />
+                <rect x="14" y="14" width="1" height="1" />
+                <rect x="15" y="14" width="1" height="1" />
+                <rect x="19" y="14" width="1" height="1" />
+                <rect x="22" y="14" width="1" height="1" />
+                <rect x="23" y="14" width="1" height="1" />
+                <rect x="24" y="14" width="1" height="1" />
+                <rect x="26" y="14" width="1" height="1" />
+                <rect x="27" y="14" width="1" height="1" />
+
+                <rect x="0" y="15" width="1" height="1" />
+                <rect x="1" y="15" width="1" height="1" />
+                <rect x="3" y="15" width="1" height="1" />
+                <rect x="4" y="15" width="1" height="1" />
+                <rect x="5" y="15" width="1" height="1" />
+                <rect x="9" y="15" width="1" height="1" />
+                <rect x="11" y="15" width="1" height="1" />
+                <rect x="12" y="15" width="1" height="1" />
+                <rect x="14" y="15" width="1" height="1" />
+                <rect x="17" y="15" width="1" height="1" />
+                <rect x="20" y="15" width="1" height="1" />
+                <rect x="21" y="15" width="1" height="1" />
+                <rect x="22" y="15" width="1" height="1" />
+                <rect x="24" y="15" width="1" height="1" />
+                <rect x="25" y="15" width="1" height="1" />
+
+                <rect x="2" y="16" width="1" height="1" />
+                <rect x="3" y="16" width="1" height="1" />
+                <rect x="4" y="16" width="1" height="1" />
+                <rect x="5" y="16" width="1" height="1" />
+                <rect x="6" y="16" width="1" height="1" />
+                <rect x="8" y="16" width="1" height="1" />
+                <rect x="9" y="16" width="1" height="1" />
+                <rect x="10" y="16" width="1" height="1" />
+                <rect x="12" y="16" width="1" height="1" />
+                <rect x="13" y="16" width="1" height="1" />
+                <rect x="17" y="16" width="1" height="1" />
+                <rect x="20" y="16" width="1" height="1" />
+                <rect x="21" y="16" width="1" height="1" />
+                <rect x="23" y="16" width="1" height="1" />
+                <rect x="25" y="16" width="1" height="1" />
+                <rect x="26" y="16" width="1" height="1" />
+
+                <rect x="0" y="17" width="1" height="1" />
+                <rect x="3" y="17" width="1" height="1" />
+                <rect x="5" y="17" width="1" height="1" />
+                <rect x="6" y="17" width="1" height="1" />
+                <rect x="10" y="17" width="1" height="1" />
+                <rect x="13" y="17" width="1" height="1" />
+                <rect x="14" y="17" width="1" height="1" />
+                <rect x="17" y="17" width="1" height="1" />
+                <rect x="18" y="17" width="1" height="1" />
+                <rect x="19" y="17" width="1" height="1" />
+                <rect x="20" y="17" width="1" height="1" />
+                <rect x="24" y="17" width="1" height="1" />
+                <rect x="25" y="17" width="1" height="1" />
+                <rect x="26" y="17" width="1" height="1" />
+                <rect x="27" y="17" width="1" height="1" />
+
+                <rect x="2" y="18" width="1" height="1" />
+                <rect x="3" y="18" width="1" height="1" />
+                <rect x="4" y="18" width="1" height="1" />
+                <rect x="5" y="18" width="1" height="1" />
+                <rect x="7" y="18" width="1" height="1" />
+                <rect x="8" y="18" width="1" height="1" />
+                <rect x="9" y="18" width="1" height="1" />
+                <rect x="11" y="18" width="1" height="1" />
+                <rect x="13" y="18" width="1" height="1" />
+                <rect x="14" y="18" width="1" height="1" />
+                <rect x="17" y="18" width="1" height="1" />
+                <rect x="19" y="18" width="1" height="1" />
+                <rect x="21" y="18" width="1" height="1" />
+                <rect x="22" y="18" width="1" height="1" />
+                <rect x="23" y="18" width="1" height="1" />
+                <rect x="24" y="18" width="1" height="1" />
+                <rect x="25" y="18" width="1" height="1" />
+                <rect x="26" y="18" width="1" height="1" />
+                <rect x="28" y="18" width="1" height="1" />
+
+                <rect x="1" y="19" width="1" height="1" />
+                <rect x="2" y="19" width="1" height="1" />
+                <rect x="3" y="19" width="1" height="1" />
+                <rect x="6" y="19" width="1" height="1" />
+                <rect x="8" y="19" width="1" height="1" />
+                <rect x="9" y="19" width="1" height="1" />
+                <rect x="10" y="19" width="1" height="1" />
+                <rect x="11" y="19" width="1" height="1" />
+                <rect x="13" y="19" width="1" height="1" />
+                <rect x="14" y="19" width="1" height="1" />
+                <rect x="15" y="19" width="1" height="1" />
+                <rect x="17" y="19" width="1" height="1" />
+                <rect x="18" y="19" width="1" height="1" />
+                <rect x="20" y="19" width="1" height="1" />
+                <rect x="24" y="19" width="1" height="1" />
+                <rect x="26" y="19" width="1" height="1" />
+                <rect x="28" y="19" width="1" height="1" />
+
+                <rect x="8" y="20" width="1" height="1" />
+                <rect x="10" y="20" width="1" height="1" />
+                <rect x="11" y="20" width="1" height="1" />
+                <rect x="12" y="20" width="1" height="1" />
+                <rect x="14" y="20" width="1" height="1" />
+                <rect x="15" y="20" width="1" height="1" />
+                <rect x="18" y="20" width="1" height="1" />
+                <rect x="20" y="20" width="1" height="1" />
+                <rect x="21" y="20" width="1" height="1" />
+                <rect x="23" y="20" width="1" height="1" />
+                <rect x="24" y="20" width="1" height="1" />
+                <rect x="25" y="20" width="1" height="1" />
+                <rect x="26" y="20" width="1" height="1" />
+
+                <rect x="0" y="21" width="1" height="1" />
+                <rect x="1" y="21" width="1" height="1" />
+                <rect x="2" y="21" width="1" height="1" />
+                <rect x="3" y="21" width="1" height="1" />
+                <rect x="4" y="21" width="1" height="1" />
+                <rect x="5" y="21" width="1" height="1" />
+                <rect x="6" y="21" width="1" height="1" />
+                <rect x="8" y="21" width="1" height="1" />
+                <rect x="10" y="21" width="1" height="1" />
+                <rect x="12" y="21" width="1" height="1" />
+                <rect x="15" y="21" width="1" height="1" />
+                <rect x="17" y="21" width="1" height="1" />
+                <rect x="19" y="21" width="1" height="1" />
+                <rect x="20" y="21" width="1" height="1" />
+                <rect x="22" y="21" width="1" height="1" />
+                <rect x="23" y="21" width="1" height="1" />
+                <rect x="25" y="21" width="1" height="1" />
+                <rect x="26" y="21" width="1" height="1" />
+
+                <rect x="0" y="22" width="1" height="1" />
+                <rect x="6" y="22" width="1" height="1" />
+                <rect x="8" y="22" width="1" height="1" />
+                <rect x="10" y="22" width="1" height="1" />
+                <rect x="12" y="22" width="1" height="1" />
+                <rect x="14" y="22" width="1" height="1" />
+                <rect x="15" y="22" width="1" height="1" />
+                <rect x="16" y="22" width="1" height="1" />
+                <rect x="17" y="22" width="1" height="1" />
+                <rect x="18" y="22" width="1" height="1" />
+                <rect x="19" y="22" width="1" height="1" />
+                <rect x="20" y="22" width="1" height="1" />
+                <rect x="21" y="22" width="1" height="1" />
+                <rect x="22" y="22" width="1" height="1" />
+                <rect x="23" y="22" width="1" height="1" />
+                <rect x="24" y="22" width="1" height="1" />
+
+                <rect x="0" y="23" width="1" height="1" />
+                <rect x="2" y="23" width="1" height="1" />
+                <rect x="3" y="23" width="1" height="1" />
+                <rect x="4" y="23" width="1" height="1" />
+                <rect x="6" y="23" width="1" height="1" />
+                <rect x="8" y="23" width="1" height="1" />
+                <rect x="11" y="23" width="1" height="1" />
+                <rect x="12" y="23" width="1" height="1" />
+                <rect x="13" y="23" width="1" height="1" />
+                <rect x="16" y="23" width="1" height="1" />
+                <rect x="17" y="23" width="1" height="1" />
+                <rect x="19" y="23" width="1" height="1" />
+                <rect x="20" y="23" width="1" height="1" />
+                <rect x="22" y="23" width="1" height="1" />
+                <rect x="24" y="23" width="1" height="1" />
+                <rect x="25" y="23" width="1" height="1" />
+                <rect x="27" y="23" width="1" height="1" />
+                <rect x="28" y="23" width="1" height="1" />
+
+                <rect x="0" y="24" width="1" height="1" />
+                <rect x="2" y="24" width="1" height="1" />
+                <rect x="3" y="24" width="1" height="1" />
+                <rect x="4" y="24" width="1" height="1" />
+                <rect x="6" y="24" width="1" height="1" />
+                <rect x="8" y="24" width="1" height="1" />
+                <rect x="10" y="24" width="1" height="1" />
+                <rect x="11" y="24" width="1" height="1" />
+                <rect x="12" y="24" width="1" height="1" />
+                <rect x="13" y="24" width="1" height="1" />
+                <rect x="14" y="24" width="1" height="1" />
+                <rect x="16" y="24" width="1" height="1" />
+                <rect x="17" y="24" width="1" height="1" />
+                <rect x="18" y="24" width="1" height="1" />
+                <rect x="20" y="24" width="1" height="1" />
+                <rect x="21" y="24" width="1" height="1" />
+                <rect x="24" y="24" width="1" height="1" />
+                <rect x="25" y="24" width="1" height="1" />
+                <rect x="26" y="24" width="1" height="1" />
+                <rect x="28" y="24" width="1" height="1" />
+
+                <rect x="0" y="25" width="1" height="1" />
+                <rect x="2" y="25" width="1" height="1" />
+                <rect x="3" y="25" width="1" height="1" />
+                <rect x="4" y="25" width="1" height="1" />
+                <rect x="6" y="25" width="1" height="1" />
+                <rect x="8" y="25" width="1" height="1" />
+                <rect x="10" y="25" width="1" height="1" />
+                <rect x="13" y="25" width="1" height="1" />
+                <rect x="14" y="25" width="1" height="1" />
+                <rect x="15" y="25" width="1" height="1" />
+                <rect x="16" y="25" width="1" height="1" />
+                <rect x="18" y="25" width="1" height="1" />
+                <rect x="19" y="25" width="1" height="1" />
+                <rect x="21" y="25" width="1" height="1" />
+                <rect x="22" y="25" width="1" height="1" />
+                <rect x="23" y="25" width="1" height="1" />
+                <rect x="24" y="25" width="1" height="1" />
+                <rect x="25" y="25" width="1" height="1" />
+                <rect x="26" y="25" width="1" height="1" />
+                <rect x="28" y="25" width="1" height="1" />
+
+                <rect x="0" y="26" width="1" height="1" />
+                <rect x="6" y="26" width="1" height="1" />
+                <rect x="8" y="26" width="1" height="1" />
+                <rect x="9" y="26" width="1" height="1" />
+                <rect x="10" y="26" width="1" height="1" />
+                <rect x="12" y="26" width="1" height="1" />
+                <rect x="13" y="26" width="1" height="1" />
+                <rect x="15" y="26" width="1" height="1" />
+                <rect x="17" y="26" width="1" height="1" />
+                <rect x="18" y="26" width="1" height="1" />
+                <rect x="19" y="26" width="1" height="1" />
+                <rect x="21" y="26" width="1" height="1" />
+                <rect x="22" y="26" width="1" height="1" />
+                <rect x="23" y="26" width="1" height="1" />
+                <rect x="24" y="26" width="1" height="1" />
+                <rect x="27" y="26" width="1" height="1" />
+
+                <rect x="0" y="27" width="1" height="1" />
+                <rect x="1" y="27" width="1" height="1" />
+                <rect x="2" y="27" width="1" height="1" />
+                <rect x="3" y="27" width="1" height="1" />
+                <rect x="4" y="27" width="1" height="1" />
+                <rect x="5" y="27" width="1" height="1" />
+                <rect x="6" y="27" width="1" height="1" />
+                <rect x="8" y="27" width="1" height="1" />
+                <rect x="10" y="27" width="1" height="1" />
+                <rect x="12" y="27" width="1" height="1" />
+                <rect x="13" y="27" width="1" height="1" />
+                <rect x="14" y="27" width="1" height="1" />
+                <rect x="15" y="27" width="1" height="1" />
+                <rect x="16" y="27" width="1" height="1" />
+                <rect x="17" y="27" width="1" height="1" />
+                <rect x="19" y="27" width="1" height="1" />
+                <rect x="21" y="27" width="1" height="1" />
+                <rect x="22" y="27" width="1" height="1" />
+                <rect x="23" y="27" width="1" height="1" />
+                <rect x="26" y="27" width="1" height="1" />
+
+                <rect x="0" y="28" width="1" height="1" />
+                <rect x="1" y="28" width="1" height="1" />
+                <rect x="2" y="28" width="1" height="1" />
+                <rect x="3" y="28" width="1" height="1" />
+                <rect x="4" y="28" width="1" height="1" />
+                <rect x="5" y="28" width="1" height="1" />
+                <rect x="6" y="28" width="1" height="1" />
+                <rect x="8" y="28" width="1" height="1" />
+                <rect x="10" y="28" width="1" height="1" />
+                <rect x="11" y="28" width="1" height="1" />
+                <rect x="14" y="28" width="1" height="1" />
+                <rect x="16" y="28" width="1" height="1" />
+                <rect x="17" y="28" width="1" height="1" />
+                <rect x="18" y="28" width="1" height="1" />
+                <rect x="20" y="28" width="1" height="1" />
+                <rect x="21" y="28" width="1" height="1" />
+                <rect x="22" y="28" width="1" height="1" />
+                <rect x="24" y="28" width="1" height="1" />
+                <rect x="26" y="28" width="1" height="1" />
+              </g>
+            </svg>
+          </div>
+          <p class="qr-label" style="margin-top: 0.5rem; font-size: 1rem">
+            Scan to Try the Platform
+          </p>
+          <p class="qr-url" style="font-size: 0.75rem; max-width: 300px">
+            https://my-repository-2uxze55i8-ngwa-ngwa.vercel.app/
+          </p>
+        </div>
+
+        <div class="contact-info" style="margin-top: 1rem">
+          <p style="font-size: 1.25rem; margin-bottom: 0.5rem">
+            <strong>Get in touch:</strong> codedbryt@gmail.com
+          </p>
+          <p style="font-size: 1.25rem; margin-bottom: 0.5rem">
+            <strong>Follow progress:</strong> LinkedIn & X (@Codedbryt)
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 11: Closing -->
+      <div class="slide title-slide">
+        <h1>Building products people use.</h1>
+        <p class="subtitle">Not features nobody needs.</p>
+        <p style="margin-top: 3rem; font-size: 1.75rem">
+          NgwaNgwa Delivery<br />
+          <span style="color: #ff6b35"
+            >Fast. Reliable. From Enugu to Nigeria.</span
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+      <button class="nav-btn" id="prevBtn" disabled>← Previous</button>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+
+    <div class="slide-counter">
+      <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+    </div>
+
+    <script>
+      // Presentation logic
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".slide");
+      const totalSlides = slides.length;
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const currentSlideSpan = document.getElementById("currentSlide");
+      const totalSlidesSpan = document.getElementById("totalSlides");
+
+      // Initialize
+      totalSlidesSpan.textContent = totalSlides;
+
+      function showSlide(n) {
+        // Remove active class from all slides
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Ensure n is within bounds
+        if (n < 0) n = 0;
+        if (n >= totalSlides) n = totalSlides - 1;
+
+        currentSlide = n;
+
+        // Add active class to current slide
+        slides[currentSlide].classList.add("active");
+
+        // Update counter
+        currentSlideSpan.textContent = currentSlide + 1;
+
+        // Update button states
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === totalSlides - 1;
+      }
+
+      function nextSlide() {
+        showSlide(currentSlide + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentSlide - 1);
+      }
+
+      // Event listeners
+      prevBtn.addEventListener("click", prevSlide);
+      nextBtn.addEventListener("click", nextSlide);
+
+      // Keyboard navigation
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" || e.key === " ") {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          showSlide(0);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          showSlide(totalSlides - 1);
+        }
+      });
+
+      // Touch/swipe support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", function (e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          // Swipe left - next slide
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+          // Swipe right - previous slide
+          prevSlide();
+        }
+      }
+
+      // Initialize first slide
+      showSlide(0);
+    </script>
+  </body>
+</html>
