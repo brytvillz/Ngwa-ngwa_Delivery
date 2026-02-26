@@ -523,3 +523,123 @@
     font-size: 1.25rem;
   }
 }
+
+/* ===========================
+   SIMPLE TIMELINE DISPLAY
+   =========================== */
+
+.tracking-timeline {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.tracking-timeline .timeline-heading {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tracking-timeline .timeline-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) 0;
+  font-size: 0.9375rem;
+  position: relative;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+
+.timeline-status {
+  font-weight: 600;
+  color: var(--color-dark);
+  min-width: 120px;
+}
+
+.timeline-separator {
+  color: var(--color-gray);
+  font-weight: 400;
+}
+
+.timeline-time {
+  color: var(--color-gray);
+  font-weight: 500;
+}
+
+.timeline-item-current .timeline-status {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.timeline-item-current .timeline-time {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.estimated-delivery {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-gray-light);
+  font-size: 0.9375rem;
+}
+
+.estimated-label {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.estimated-time {
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+/* Mobile responsiveness for timeline */
+@media (max-width: 518px) {
+  .tracking-timeline {
+    padding: var(--spacing-md);
+  }
+
+  .tracking-timeline .timeline-heading {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .timeline-list {
+    gap: 0.5rem;
+  }
+
+  .tracking-timeline .timeline-item {
+    font-size: 0.875rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline-status {
+    min-width: 100px;
+    font-size: 0.875rem;
+  }
+
+  .timeline-time {
+    font-size: 0.8125rem;
+  }
+
+  .estimated-delivery {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+  }
+}

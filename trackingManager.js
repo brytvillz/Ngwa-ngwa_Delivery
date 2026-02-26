@@ -276,6 +276,87 @@ function formatTimestamp(isoString) {
 }
 
 /**
+ * Format time only (for timeline display)
+ */
+function formatTimeOnly(isoString) {
+  const date = new Date(isoString);
+  const options = {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  };
+  return date.toLocaleTimeString("en-US", options);
+}
+
+/**
+ * Render delivery timeline
+ */
+function renderTimeline(booking) {
+  // Handle missing timeline gracefully
+  if (
+    !booking.timeline ||
+    !Array.isArray(booking.timeline) ||
+    booking.timeline.length === 0
+  ) {
+    return `
+      <div class="tracking-timeline">
+        <h3 class="timeline-heading">📅 Delivery Timeline</h3>
+        <div class="timeline-item">
+          <span class="timeline-status">Booked</span>
+          <span class="timeline-time">${formatTimeOnly(booking.submittedAt)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // Build timeline HTML
+  let timelineHTML = `
+    <div class="tracking-timeline">
+      <h3 class="timeline-heading">📅 Delivery Timeline</h3>
+      <div class="timeline-list">
+  `;
+
+  // Detect the latest timeline entry (safely)
+  const latestIndex = booking.timeline.length - 1;
+
+  // Render each timeline entry
+  booking.timeline.forEach((entry, index) => {
+    const isLatest = index === latestIndex;
+    const currentIndicator = isLatest ? " <strong>(Current)</strong>" : "";
+
+    timelineHTML += `
+      <div class="timeline-item ${isLatest ? "timeline-item-current" : ""}">
+        <span class="timeline-status">${entry.stage}${currentIndicator}</span>
+        <span class="timeline-separator">—</span>
+        <span class="timeline-time">${formatTimeOnly(entry.timestamp)}</span>
+      </div>
+    `;
+  });
+
+  timelineHTML += `</div>`; // Close timeline-list
+
+  // Add estimated delivery time if it exists
+  if (booking.estimatedDeliveryTime) {
+    const estimatedDate = new Date(booking.estimatedDeliveryTime);
+    const now = new Date();
+
+    // Only show if delivery is not yet complete and estimate is in the future
+    if (booking.status !== "Delivered" && estimatedDate > now) {
+      timelineHTML += `
+        <div class="estimated-delivery">
+          <span class="estimated-label">⏰ Estimated Delivery:</span>
+          <span class="estimated-time">${formatTimeOnly(booking.estimatedDeliveryTime)}</span>
+        </div>
+      `;
+    }
+  }
+
+  timelineHTML += `</div>`; // Close tracking-timeline
+
+  return timelineHTML;
+}
+
+/**
  * Reset tracking form to search again
  */
 function resetTrackingForm() {

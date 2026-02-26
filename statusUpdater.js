@@ -50,6 +50,15 @@ function updateDeliveryStatus(referenceId, newStatus) {
   // Get booking
   const booking = bookings[bookingIndex];
 
+  // Prevent further status updates after Delivered
+  if (booking.status === "Delivered") {
+    console.warn("Cannot update status: Order is already delivered");
+    alert(
+      "This order has already been delivered. No further status updates allowed.",
+    );
+    return false;
+  }
+
   // Don't allow backward status progression
   const statusOrder = [
     "Booked",
@@ -71,14 +80,51 @@ function updateDeliveryStatus(referenceId, newStatus) {
     return false;
   }
 
+  // Prevent duplicate consecutive statuses
+  if (booking.status === newStatus) {
+    console.warn("Status is already set to:", newStatus, "- No update needed");
+    return false;
+  }
+
   // Update status
   booking.status = newStatus;
 
-  // Add to timeline
-  booking.timeline.push({
-    stage: newStatus,
-    timestamp: new Date().toISOString(),
-  });
+  // Initialize timeline array if it doesn't exist (backward compatibility)
+  if (!Array.isArray(booking.timeline)) {
+    booking.timeline = [
+      {
+        stage: "Booked",
+        timestamp: booking.submittedAt || new Date().toISOString(),
+      },
+    ];
+  }
+
+  // Add to timeline (prevent duplicate consecutive entries)
+  const lastTimelineEntry = booking.timeline[booking.timeline.length - 1];
+  if (!lastTimelineEntry || lastTimelineEntry.stage !== newStatus) {
+    booking.timeline.push({
+      stage: newStatus,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  // Automatically set estimated delivery time when status becomes "Picked Up"
+  if (newStatus === "Picked Up" && !booking.estimatedDeliveryTime) {
+    const currentTime = new Date();
+    const estimatedTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000); // +2 hours
+    booking.estimatedDeliveryTime = estimatedTime.toISOString();
+    console.log(
+      `📅 Estimated delivery time set: ${estimatedTime.toLocaleString("en-GB")}`,
+    );
+  }
+
+  // Set delivered time when status becomes "Delivered"
+  if (newStatus === "Delivered" && !booking.deliveredTime) {
+    booking.deliveredTime = new Date().toISOString();
+    console.log(
+      `✅ Delivered time recorded: ${new Date(booking.deliveredTime).toLocaleString("en-GB")}`,
+    );
+  }
 
   // Update booking in array
   bookings[bookingIndex] = booking;
