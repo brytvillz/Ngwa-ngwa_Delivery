@@ -147,10 +147,17 @@ function formatPrice(amount) {
  * Generate price estimate display HTML
  */
 function generatePriceEstimateHTML(pricing) {
+  // Console log for debugging
+  console.log("💰 Final Price Calculated:", {
+    total: pricing.total,
+    breakdown: pricing.breakdown,
+    pickupFee: pricing.pickupFee,
+  });
+
   return `
         <div class="price-estimate">
             <div class="price-header">
-                <span class="price-label">Estimated Total:</span>
+                <span class="price-label">Final Delivery Price:</span>
                 <span class="price-amount">${formatPrice(pricing.total)}</span>
             </div>
             <div class="price-breakdown">
@@ -199,7 +206,7 @@ function generatePriceEstimateHTML(pricing) {
                 }
             </div>
             <p class="price-note">
-                <strong>Note:</strong> This is an estimate. Final price will be confirmed when we contact you.
+                <strong>Price Guarantee:</strong> This is your final delivery price. It will only change if the package weight or address provided is different during pickup.
             </p>
         </div>
     `;

@@ -484,7 +484,9 @@ function collectFormData() {
   // Calculate pricing if pricing calculator is available
   if (typeof calculatePrice === "function") {
     bookingData.pricing = calculatePrice(bookingData);
+    bookingData.finalPrice = bookingData.pricing.total; // Save final price
     console.log("💰 Pricing calculated:", bookingData.pricing);
+    console.log("💵 Final Price Saved:", bookingData.finalPrice);
   }
 
   return bookingData;
@@ -548,6 +550,9 @@ function saveBooking(bookingData) {
   localStorage.setItem("ngwangwa_bookings", JSON.stringify(bookings));
 
   console.log(`✅ Booking ${bookingData.reference} saved to localStorage`);
+  console.log(
+    `💵 Final Price stored: ₦${bookingData.finalPrice?.toLocaleString("en-NG") || "N/A"}`,
+  );
 }
 
 /**
@@ -565,7 +570,15 @@ function generateSuccessHTML(bookingData) {
             
             <div class="booking-reference">
                 <span class="reference-label">Your Booking Reference:</span>
-                <span class="reference-number">${bookingData.reference}</span>
+                <span class="reference-number" id="bookingReferenceNumber">${bookingData.reference}</span>
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    id="copyReferenceBtn"
+                    onclick="copyBookingReference('${bookingData.reference}')"
+                    style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem;">
+                    📋 Copy Reference
+                </button>
                 <p class="reference-help">
                     Please save this reference. You'll need it to track or confirm your delivery.
                 </p>
@@ -698,3 +711,80 @@ function resetForm() {
 
   console.log("Form reset - ready for new quote request");
 }
+
+/**
+ * Copy booking reference to clipboard
+ */
+function copyBookingReference(reference) {
+  // Use modern clipboard API if available
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(reference)
+      .then(() => {
+        // Success feedback
+        const btn = document.getElementById("copyReferenceBtn");
+        if (btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = "✓ Copied!";
+          btn.style.backgroundColor = "var(--color-primary)";
+          btn.style.color = "white";
+
+          // Reset after 2 seconds
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
+          }, 2000);
+        }
+        console.log(`✓ Booking reference copied: ${reference}`);
+      })
+      .catch((err) => {
+        console.error("Failed to copy:", err);
+        fallbackCopy(reference);
+      });
+  } else {
+    // Fallback for older browsers
+    fallbackCopy(reference);
+  }
+}
+
+/**
+ * Fallback copy method for older browsers
+ */
+function fallbackCopy(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.top = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    const successful = document.execCommand("copy");
+    if (successful) {
+      const btn = document.getElementById("copyReferenceBtn");
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "✓ Copied!";
+        btn.style.backgroundColor = "var(--color-primary)";
+        btn.style.color = "white";
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.backgroundColor = "";
+          btn.style.color = "";
+        }, 2000);
+      }
+      console.log(`✓ Booking reference copied (fallback): ${text}`);
+    }
+  } catch (err) {
+    console.error("Fallback copy failed:", err);
+    alert(`Please copy manually: ${text}`);
+  }
+
+  document.body.removeChild(textArea);
+}
+
+// Make copy function globally available
+window.copyBookingReference = copyBookingReference;

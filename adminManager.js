@@ -29,6 +29,16 @@ function loadOrders() {
   filteredOrders = [...allOrders]; // Copy all orders initially
 
   console.log(`📦 Loaded ${allOrders.length} orders`);
+
+  // Log finalPrice for each order
+  allOrders.forEach((order) => {
+    if (order.finalPrice) {
+      console.log(
+        `💵 Order ${order.reference}: Final Price = ₦${order.finalPrice.toLocaleString("en-NG")}`,
+      );
+    }
+  });
+
   return allOrders;
 }
 
@@ -504,7 +514,7 @@ ${order.item.specialInstructions ? `Instructions: ${order.item.specialInstructio
 🚴 ASSIGNED RIDER
 ${riderInfo}
 
-${order.pricing ? `💰 PRICING\nEstimated: ₦${order.pricing.total.toLocaleString("en-NG")}` : ""}
+${order.finalPrice ? `💰 FINAL PRICE\n₦${order.finalPrice.toLocaleString("en-NG")}` : order.pricing ? `💰 PRICING\nEstimated: ₦${order.pricing.total.toLocaleString("en-NG")}` : ""}
 
 📅 TIMELINE
 ${order.timeline.map((t) => `• ${t.stage}: ${new Date(t.timestamp).toLocaleString("en-GB")}${t.details ? ` - ${t.details}` : ""}`).join("\n")}
