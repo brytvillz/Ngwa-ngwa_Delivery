@@ -42,8 +42,8 @@
             <span class="highlight">Enugu Businesses</span>
           </h2>
           <p class="hero-text">
-            Book with clarity. Get assigned a rider. Track every stage—from
-            pickup in Enugu to delivery anywhere in the city.
+            Book with clarity. Get upfront pricing. Get assigned a rider. Track
+            every stage—from pickup in Enugu to delivery anywhere in the city.
           </p>
         </section>
 
@@ -77,6 +77,123 @@
           <form class="quote-form" id="quoteForm" novalidate>
             <!-- STEP 1: Pickup & Delivery Locations -->
             <div class="form-step active" data-step="1">
+              <!-- User Type Selection -->
+              <div class="form-group">
+                <label class="form-label">
+                  I'm booking as: <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="userType"
+                      value="individual"
+                      class="radio-input"
+                      checked
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Individual</strong>
+                    </span>
+                  </label>
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="userType"
+                      value="vendor"
+                      class="radio-input"
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Vendor (SME)</strong>
+                    </span>
+                  </label>
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="userType"
+                      value="organisation"
+                      class="radio-input"
+                      required
+                    />
+                    <span class="radio-text">
+                      <strong>Organisation</strong>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Vendor-Specific Fields (Hidden by default) -->
+              <div id="vendorFields" style="display: none">
+                <div class="form-group">
+                  <label for="businessName" class="form-label">
+                    Business Name <span class="optional">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="businessName"
+                    name="businessName"
+                    class="form-input"
+                    placeholder="e.g., ChiChi Fashion Store"
+                  />
+                  <span class="form-help"> Your business or shop name </span>
+                </div>
+
+                <div class="form-group">
+                  <label for="businessPhone" class="form-label">
+                    Business Phone <span class="optional">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="businessPhone"
+                    name="businessPhone"
+                    class="form-input"
+                    placeholder="08012345678"
+                    inputmode="numeric"
+                    maxlength="11"
+                  />
+                  <span class="form-help">
+                    Business contact number (if different from personal)
+                  </span>
+                </div>
+
+                <div class="form-group">
+                  <label for="businessInstagram" class="form-label">
+                    Instagram Handle <span class="optional">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="businessInstagram"
+                    name="businessInstagram"
+                    class="form-input"
+                    placeholder="@yourbusiness"
+                  />
+                  <span class="form-help"> Help us promote your business </span>
+                </div>
+              </div>
+
+              <!-- Vendor Features Coming Soon Section -->
+              <div id="vendorFeaturesPreview" style="display: none">
+                <div class="vendor-features-box">
+                  <h3 class="vendor-features-heading">
+                    🚀 Vendor Features Coming Soon
+                  </h3>
+                  <ul class="vendor-features-list">
+                    <li>Your Own Rider (same rider every time)</li>
+                    <li>Business Dashboard (track all deliveries)</li>
+                    <li>Bulk Booking (book many deliveries at once)</li>
+                    <li>Priority Support (faster response)</li>
+                    <li>Vendor of the Week (get featured)</li>
+                    <li>Rider Ratings (see best riders)</li>
+                    <li>Delivery Reports (success rate, speed)</li>
+                    <li>Customer Feedback (ratings & reviews)</li>
+                  </ul>
+                  <p class="vendor-features-note">
+                    More features coming soon based on your feedback.
+                  </p>
+                </div>
+              </div>
+
               <div class="form-group">
                 <label for="pickupLocation" class="form-label">
                   Where should we pick up from? <span class="required">*</span>
@@ -318,6 +435,30 @@
                     </span>
                   </label>
                 </div>
+              </div>
+
+              <!-- Vendor Pilot Banner (Hidden by default) -->
+              <div
+                id="vendorPilotBanner"
+                style="
+                  display: none;
+                  margin: 1.5rem 0;
+                  padding: 1rem;
+                  border: 2px solid #22c55e;
+                  border-radius: 8px;
+                  background-color: #f0fdf4;
+                "
+              >
+                <p
+                  style="
+                    margin: 0;
+                    color: #166534;
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                  "
+                >
+                  🎉 Special Offer: Your FIRST delivery is FREE!
+                </p>
               </div>
 
               <div class="form-actions">

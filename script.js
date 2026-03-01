@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Set up step navigation buttons
   setupStepNavigation();
+
+  // Set up vendor fields toggle
+  setupVendorFieldsToggle();
 });
 
 /**
@@ -70,6 +73,141 @@ function setupStepNavigation() {
       goToStep(2);
     });
   }
+}
+
+/**
+ * Set up vendor fields toggle based on user type selection
+ * This is backward compatible and doesn't affect existing flow
+ */
+function setupVendorFieldsToggle() {
+  const userTypeRadios = document.querySelectorAll('input[name="userType"]');
+  const vendorFields = document.getElementById("vendorFields");
+  const vendorBanner = document.getElementById("vendorPilotBanner");
+  const vendorFeaturesPreview = document.getElementById(
+    "vendorFeaturesPreview",
+  );
+
+  if (!userTypeRadios.length || !vendorFields || !vendorBanner) {
+    return; // Elements not found, skip setup
+  }
+
+  // Get pickup method radio buttons
+  const pickupMethodRadios = document.querySelectorAll(
+    'input[name="pickupMethod"]',
+  );
+  const pickupMethodLabels = document.querySelectorAll(
+    ".radio-group .radio-label",
+  );
+
+  // Get Step 3 labels for dynamic updates
+  const customerNameLabel = document.querySelector('label[for="customerName"]');
+  const customerPhoneLabel = document.querySelector(
+    'label[for="customerPhone"]',
+  );
+  const customerNameHelp = document.getElementById("customerNameHelp");
+  const customerPhoneHelp = document.getElementById("customerPhoneHelp");
+
+  // Add change event listener to all user type radio buttons
+  userTypeRadios.forEach(function (radio) {
+    radio.addEventListener("change", function () {
+      if (this.value === "vendor") {
+        // Show vendor fields and banner
+        vendorFields.style.display = "block";
+        vendorBanner.style.display = "block";
+
+        // Show vendor features preview
+        if (vendorFeaturesPreview) {
+          vendorFeaturesPreview.style.display = "block";
+        }
+
+        // Update Step 3 labels for vendor customers
+        if (customerNameLabel) {
+          customerNameLabel.innerHTML =
+            'Customer Name <span class="required">*</span>';
+        }
+        if (customerPhoneLabel) {
+          customerPhoneLabel.innerHTML =
+            'Customer Phone <span class="required">*</span>';
+        }
+        if (customerNameHelp) {
+          customerNameHelp.textContent =
+            "Your customer's full name (person receiving the delivery)";
+        }
+        if (customerPhoneHelp) {
+          customerPhoneHelp.textContent =
+            "Your customer's phone number for delivery coordination";
+        }
+
+        // Update pickup method options for vendors
+        pickupMethodRadios.forEach(function (pickupRadio) {
+          if (pickupRadio.value === "rider") {
+            pickupRadio.checked = true; // Auto-select rider pickup
+          }
+        });
+
+        // Update pickup method labels for vendors
+        pickupMethodLabels.forEach(function (label) {
+          const radio = label.querySelector('input[name="pickupMethod"]');
+          const textSpan = label.querySelector(".radio-text");
+
+          if (radio && textSpan) {
+            if (radio.value === "rider") {
+              textSpan.innerHTML =
+                "<strong>Request a rider to pick up</strong>";
+            } else if (radio.value === "dropoff") {
+              // Hide drop-off option for vendors
+              label.style.display = "none";
+            }
+          }
+        });
+      } else {
+        // Hide vendor fields and banner
+        vendorFields.style.display = "none";
+        vendorBanner.style.display = "none";
+
+        // Hide vendor features preview
+        if (vendorFeaturesPreview) {
+          vendorFeaturesPreview.style.display = "none";
+        }
+
+        // Restore original Step 3 labels for non-vendors
+        if (customerNameLabel) {
+          customerNameLabel.innerHTML =
+            'Your Name <span class="required">*</span>';
+        }
+        if (customerPhoneLabel) {
+          customerPhoneLabel.innerHTML =
+            'Phone Number <span class="required">*</span>';
+        }
+        if (customerNameHelp) {
+          customerNameHelp.textContent =
+            "Your full name for coordinating pickup or delivery";
+        }
+        if (customerPhoneHelp) {
+          customerPhoneHelp.textContent =
+            "Nigerian mobile number (11 digits, starts with 070-091)";
+        }
+
+        // Restore original pickup method options for non-vendors
+        pickupMethodLabels.forEach(function (label) {
+          const radio = label.querySelector('input[name="pickupMethod"]');
+          const textSpan = label.querySelector(".radio-text");
+
+          if (radio && textSpan) {
+            label.style.display = ""; // Show all options
+
+            if (radio.value === "dropoff") {
+              textSpan.innerHTML = "<strong>I'll bring it to your hub</strong>";
+              radio.checked = true; // Default for non-vendors
+            } else if (radio.value === "rider") {
+              textSpan.innerHTML =
+                "<strong>Send a rider to pick it up</strong>";
+            }
+          }
+        });
+      }
+    });
+  });
 }
 
 /**
@@ -426,6 +564,37 @@ function collectFormData() {
     ? pickupMethodInput.value
     : "dropoff";
 
+  // Get selected user type
+  const userTypeInput = document.querySelector(
+    'input[name="userType"]:checked',
+  );
+  const userTypeValue = userTypeInput ? userTypeInput.value : "individual";
+
+  // Collect vendor info if user is a vendor
+  let vendorInfo = null;
+  if (userTypeValue === "vendor") {
+    const businessName = document.getElementById("businessName");
+    const businessPhone = document.getElementById("businessPhone");
+    const businessInstagram = document.getElementById("businessInstagram");
+
+    vendorInfo = {
+      type: "Vendor",
+      businessName:
+        businessName && businessName.value.trim()
+          ? businessName.value.trim()
+          : null,
+      businessPhone:
+        businessPhone && businessPhone.value.trim()
+          ? businessPhone.value.trim()
+          : null,
+      instagram:
+        businessInstagram && businessInstagram.value.trim()
+          ? businessInstagram.value.trim()
+          : null,
+      pilotEligible: true,
+    };
+  }
+
   // Build and return the booking data object
   const bookingData = {
     // Unique booking reference
@@ -464,6 +633,9 @@ function collectFormData() {
       name: document.getElementById("customerName").value.trim(),
       phone: document.getElementById("customerPhone").value.trim(),
     },
+
+    // Vendor Information (null if not a vendor)
+    vendorInfo: vendorInfo,
 
     // Metadata
     status: "Booked", // Booked, Awaiting Pickup, Picked Up, In Transit, Delivered
@@ -559,14 +731,41 @@ function saveBooking(bookingData) {
  * Generate success message HTML from booking data object
  */
 function generateSuccessHTML(bookingData) {
+  // Check if this is a vendor booking
+  const isVendor =
+    bookingData.vendorInfo && bookingData.vendorInfo.type === "Vendor";
+  const businessName =
+    isVendor && bookingData.vendorInfo.businessName
+      ? bookingData.vendorInfo.businessName
+      : null;
+
+  // Generate appropriate greeting
+  const greetingName = businessName ? businessName : bookingData.customer.name;
+  const greetingText = isVendor
+    ? `Daalụ (Thank you), <strong>${greetingName}</strong>!`
+    : `Daalụ (Thank you), <strong>${greetingName}</strong>!`;
+
   return `
         <div class="success-message" id="successMessage">
             <div class="success-icon">✓</div>
             <h3 class="success-title">Quote Request Received!</h3>
             <p class="success-text">
-                Daalụ (Thank you), <strong>${bookingData.customer.name}</strong>! 
+                ${greetingText}
                 We've received your delivery request.
             </p>
+            
+            ${
+              isVendor
+                ? `
+            <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <p style="margin: 0; color: #0c4a6e; font-size: 0.9rem; line-height: 1.6;">
+                    💼 <strong>For Your Business:</strong> Share this booking reference and summary with your customer. 
+                    This makes your business look professional and organized. Our riders only speak to you—no confusion with customers.
+                </p>
+            </div>
+            `
+                : ""
+            }
             
             <div class="booking-reference">
                 <span class="reference-label">Your Booking Reference:</span>
@@ -592,7 +791,7 @@ function generateSuccessHTML(bookingData) {
                     View My Bookings
                 </a>
                 <button type="button" class="btn btn-primary" id="newQuoteBtn" style="flex: 1;">
-                    Request Another Quote
+                    Book Another Delivery
                 </button>
             </div>
         </div>
@@ -603,6 +802,21 @@ function generateSuccessHTML(bookingData) {
  * Generate booking summary section HTML
  */
 function generateBookingSummaryHTML(bookingData) {
+  // Check if this is a vendor booking
+  const isVendor =
+    bookingData.vendorInfo && bookingData.vendorInfo.type === "Vendor";
+
+  // Generate vendor info section if applicable
+  const vendorInfoHTML =
+    isVendor && bookingData.vendorInfo.businessName
+      ? `
+    <div class="summary-item" style="background: #f0fdf4; padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
+        <span class="summary-label" style="font-weight: 700; color: #166534;">Business:</span>
+        <span class="summary-value" style="font-weight: 700; color: #166534;">${bookingData.vendorInfo.businessName}</span>
+    </div>
+  `
+      : "";
+
   // Generate pricing HTML if available
   const pricingHTML =
     bookingData.pricing && typeof generatePriceEstimateHTML === "function"
@@ -612,6 +826,7 @@ function generateBookingSummaryHTML(bookingData) {
   return `
         <div class="booking-summary">
             <h4>Your Booking Details:</h4>
+            ${vendorInfoHTML}
             <div class="summary-item">
                 <span class="summary-label">From:</span>
                 <span class="summary-value">${bookingData.pickup.location}</span>
@@ -637,7 +852,7 @@ function generateBookingSummaryHTML(bookingData) {
                 <span class="summary-value">${bookingData.delivery.speedLabel}</span>
             </div>
             <div class="summary-item">
-                <span class="summary-label">Contact:</span>
+                <span class="summary-label">${isVendor ? "Customer Contact:" : "Contact:"}</span>
                 <span class="summary-value">${bookingData.customer.phone}</span>
             </div>
             ${
@@ -660,16 +875,35 @@ function generateBookingSummaryHTML(bookingData) {
  * Generate next steps section HTML
  */
 function generateNextStepsHTML(bookingData) {
+  // Check if this is a vendor booking
+  const isVendor =
+    bookingData.vendorInfo && bookingData.vendorInfo.type === "Vendor";
+  const isFreeDelivery = isVendor && bookingData.vendorInfo.pilotEligible;
+
+  // Generate appropriate next steps based on user type
+  const nextStepsContent = isVendor
+    ? `
+    <ol class="steps-list">
+        <li><strong>We'll call you within 2 minutes</strong> to confirm your booking${isFreeDelivery ? " and your FREE first delivery" : ""}</li>
+        <li><strong>Our rider will come to your location</strong> to pick up the item (you selected rider pickup)</li>
+        <li><strong>You stay in control</strong> — Our riders coordinate with you only, not your customer</li>
+        <li><strong>Share this reference with your customer</strong> so they can track their delivery anytime</li>
+        <li><strong>Track the delivery:</strong> <a href="tracking.html" style="color: var(--color-primary); font-weight: 600;">Track Now →</a></li>
+    </ol>
+  `
+    : `
+    <ol class="steps-list">
+        <li><strong>We'll call you within 2 minutes</strong> to confirm your booking and pricing</li>
+        <li><strong>Choose pickup method:</strong> Drop off at our hub OR wait for rider pickup (if available)</li>
+        <li><strong>We'll assign a delivery partner</strong> and update you when your item is picked up</li>
+        <li><strong>Track your delivery anytime:</strong> <a href="tracking.html" style="color: var(--color-primary); font-weight: 600;">Track Now →</a></li>
+    </ol>
+  `;
+
   return `
         <div class="next-steps">
             <h4>What Happens Next?</h4>
-            <ol class="steps-list">
-                <li>Our team will review your request and call you within 2-4 hours</li>
-                <li>We'll confirm pricing and discuss pickup/drop-off options</li>
-                <li>You can drop off at our hub or arrange rider pickup (based on availability)</li>
-                <li>We'll update you once your item is with our delivery partner</li>
-                <li>Track your shipment anytime using your reference: <a href="tracking.html" style="color: var(--color-primary); font-weight: 600;">Track Now →</a></li>
-            </ol>
+            ${nextStepsContent}
         </div>
     `;
 }
